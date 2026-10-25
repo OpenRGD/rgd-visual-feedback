@@ -4,7 +4,7 @@
 
 Visual Feedback v0.2.0 is operational on Paky-01, and the BLE control has been operator-confirmed. This proposal does **not** claim that the Console can already discover, install or configure Visual Feedback.
 
-The GitHub repository `OpenRGD/rgd-console` currently has no files on its default branch; the operator's locally working Console must be reconciled/published separately before implementation is planned there.
+The Console source has since been published as `OpenRGD/rgd-console`, `main` baseline `3395b66` (2026-10-25). The current Module Agent and `OpenRGD/rgd-modules` v0.1 Registry only support pinned Cargo builds, **not** this Python user service. Discovery/host observation therefore requires a separate reviewed contract; see the Console proposal `docs/VISUAL-FEEDBACK-INTEGRATION.md` on its dedicated draft branch. Do not make the service installable by mislabeling it as a Cargo module.
 
 ## Contract for future module discovery
 
