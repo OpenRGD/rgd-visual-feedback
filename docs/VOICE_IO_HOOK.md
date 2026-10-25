@@ -64,4 +64,13 @@ The ordering guard is memory-only, remembers at most 32 retired producer session
 
 Nothing in this PR modifies the currently running v0.2 systemd service. After merge and review, update the cloned Visual repo on Paky-01 and explicitly restart `systemctl --user restart paky01-visual-feedback` only at a convenient maintenance point. Verify the old `paky-led` CLI first, then emit synthetic voice events on the updated daemon. A live Voice Studio connection remains pending until its code is available.
 
+A deliberate synthetic smoke test is included. It prints events without contacting any service by default:
+
+```bash
+python3 scripts/voice_event_smoke.py            # dry run; no LED effect
+python3 scripts/voice_event_smoke.py --apply    # explicitly sends events (updated v0.3 daemon only)
+```
+
+This is **not** a substitute for actual Voice Studio lifecycle evidence.
+
 **Safety:** Visual states are UI effects, not motor/boot readiness, perception accuracy, safety authorization or Chronon evidence.
