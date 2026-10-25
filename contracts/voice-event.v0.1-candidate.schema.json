@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openrgd.org/candidate/visual/voice-event.v0.1",
+  "title": "Visual Feedback local voice lifecycle ingress v0.1 candidate",
+  "description": "Same-user Unix socket event request. Not a canonical Chronon, a hardware observation or an authenticated network API.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "command",
+    "schema_version",
+    "source",
+    "session_id",
+    "sequence",
+    "event"
+  ],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "command": {
+      "const": "voice_event"
+    },
+    "schema_version": {
+      "const": "openrgd.visual.voice-event.v0.1-candidate"
+    },
+    "source": {
+      "const": "rgd-voice"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{32}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854776000
+    },
+    "event": {
+      "enum": [
+        "listening.started",
+        "inference.started",
+        "playback.started",
+        "playback.ended",
+        "voice.error",
+        "voice.ready"
+      ]
+    }
+  }
+}
