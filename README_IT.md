@@ -1,6 +1,8 @@
 # OpenRGD — Paky-01 Visual Feedback v0.2
 
-**Software candidate, not yet live-tested as a daemon**. The underlying BLE color and brightness packets **were physically tested** on the Paky-01 ring (2026-10-25). The package's offline protocol tests pass; Ubuntu/service integration requires operator validation.
+**Visual Feedback v0.2 physically validated by the Paky-01 operator (2026-10-25)**: BLE color changes, CLI states and Ubuntu user service reported working. The optional v0.3 voice lifecycle IPC addition is **candidate-only**, has synthetic tests, and is not yet deployed or connected to actual Voice Studio events.
+
+Optional voice-event ingress proposed in the separate v0.3 PR: see `docs/VOICE_IO_HOOK.md`. It does not change the v0.2 installation until explicitly updated.
 
 Features:
 - Single-owner BLE connection + reconnection every ~3 seconds following discovery/connection errors.
