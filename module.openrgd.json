@@ -1,0 +1,45 @@
+{
+  "schema_version": "0.1.0-candidate",
+  "module_id": "org.openrgd.visual-feedback",
+  "module_version": "0.2.0",
+  "name": "OpenRGD Visual Feedback",
+  "runtime": "python-user-service",
+  "registry_status": "proposal-only",
+  "installation_status": "manual-only",
+  "non_actuating": true,
+  "automatic_motion_on_load": false,
+  "capabilities": [
+    "visual.state.set",
+    "visual.state.status"
+  ],
+  "supported_states": [
+    "idle",
+    "listening",
+    "thinking",
+    "speaking",
+    "error",
+    "off"
+  ],
+  "local_interface": {
+    "protocol_version": 1,
+    "transport": "unix-domain-socket",
+    "scope": "same-user",
+    "requests": [
+      "set_state",
+      "status"
+    ],
+    "socket_path": "$XDG_RUNTIME_DIR/paky01-visual-feedback.sock",
+    "note": "Current Paky-01 adapter only; not a canonical hardware-independent socket path."
+  },
+  "adapter": {
+    "id": "miracles-star-ble",
+    "hardware_binding": "local-configuration",
+    "activation": "explicit user-level installation",
+    "verification": "operator-reported Paky-01 Ubuntu 22.04 physical test"
+  },
+  "safety_notes": [
+    "Manifest discovery does not install, start or pair hardware.",
+    "LED state acknowledgment is not independent observation of physical light output.",
+    "No actuator, CAN or Somatic Runtime operations."
+  ]
+}
