@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "adapter": "miracles-star-ble",
+  "device_address": "FF:24:11:29:26:62",
+  "states": {
+    "idle":      {"color": "#FFFFFF", "brightness": 10},
+    "listening": {"color": "#0050FF", "brightness": 35},
+    "thinking":  {"color": "#9600FF", "brightness": 35},
+    "speaking": {"color": "#00FF46", "brightness": 35},
+    "error":     {"color": "#FF0000", "brightness": 30},
+    "off":       {"color": "#000000", "brightness": 0}
+  }
+}

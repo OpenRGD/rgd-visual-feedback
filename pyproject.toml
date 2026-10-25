@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rgd-visual-feedback"
+version = "0.2.0"
+description = "OpenRGD local visual feedback adapter for Paky-01 BLE RGB ring"
+readme = "README_IT.md"
+requires-python = ">=3.10"
+dependencies = ["bleak>=0.20,<3"]
+
+[project.scripts]
+paky-led = "rgd_visual.cli:main"
+paky-led-daemon = "rgd_visual.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
