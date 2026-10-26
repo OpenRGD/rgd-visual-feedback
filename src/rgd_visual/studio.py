@@ -6,12 +6,13 @@ host permissions and output verification require separately reviewed waves.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 import json
 from pathlib import Path
 import re
 from typing import Any
 
-from .expressions import plan_eye_preview, validate_expression
+from .expressions import plan_eye_preview, validate_expression, validate_proposal
 
 SCHEMA = "openrgd.visual-studio.profile.v0.1-candidate"
 SCHEMA_V02 = "openrgd.visual-studio.profile.v0.2-candidate"
@@ -202,4 +203,77 @@ def preview(profile: dict, source: str, event: str) -> dict:
         "preview_only": True,
         "non_actuating": True,
         "hardware_commands_sent": False,
+    }
+
+
+def stage_expression_preview(
+    profile: dict,
+    candidate: dict,
+    scene: str,
+    *,
+    zone_id: str = "expressive-eyes",
+    replace_existing: bool = False,
+) -> dict:
+    """Stage declarative expression into a COPY of a v0.2 profile, never disk.
+
+    Future Cognitive System producers must send their complete, separately
+    authenticated proposal envelope via an authorized ingress. This pure
+    function can validate the declared robot id but CANNOT authenticate
+    the sender. The returned candidate profile is always preview_only.
+    """
+    p = validate_profile(profile)
+    if p["schema_version"] != SCHEMA_V02:
+        raise ValueError("Expressions require v0.2 profile format")
+    _identifier(scene, "scene")
+    if scene not in p["scenes"]:
+        raise ValueError("Scene does not exist")
+    _identifier(zone_id, "expressive zone id")
+
+    zones = [zone for zone in p["zones"] if zone["id"] == zone_id]
+    if len(zones) != 1 or EYE_EFFECT not in zones[0]["capabilities"]:
+        raise ValueError("Zone does not declare expressive display capability")
+
+    if not isinstance(candidate, dict):
+        raise ValueError("Expression candidate must be an object")
+    is_cognitive = candidate.get("origin") == "cognitive_proposal" or "contract" in candidate
+    if "contract" in candidate:
+        proposal = validate_proposal(candidate)
+        if proposal["robot_id"] != p["robot_id"]:
+            raise ValueError("Cognitive proposal robot id does not match scene profile")
+        expression = proposal["expression"]
+    else:
+        expression = validate_expression(candidate)
+        if is_cognitive:
+            raise ValueError("Cognitive expressions require full validated proposal envelope")
+
+    name = expression["expression_id"]
+    catalog = p["expressions"]
+    if name not in catalog and len(catalog) >= EXPRESSIONS_LIMIT:
+        raise ValueError("Expression catalog is full")
+    if name in catalog and catalog[name] != expression and replace_existing is not True:
+        raise ValueError("Existing catalog recipe differs; explicit replacement review required")
+
+    new_profile = deepcopy(p)
+    new_profile["expressions"][name] = deepcopy(expression)
+    target = {"zone_id": zone_id, "effect": EYE_EFFECT, "expression_id": name}
+    existing_scene = new_profile["scenes"][scene]
+    new_profile["scenes"][scene] = [
+        target if old["zone_id"] == zone_id else old for old in existing_scene
+    ] if any(old["zone_id"] == zone_id for old in existing_scene) else existing_scene + [target]
+    validate_profile(new_profile)
+    return {
+        "schema_version": "openrgd.visual-studio.expression-stage.v0.1-candidate",
+        "robot_id": p["robot_id"],
+        "scene": scene,
+        "zone_id": zone_id,
+        "expression_id": name,
+        "source_kind": expression["origin"],
+        "catalog_changed": catalog.get(name) != expression,
+        "profile_candidate": new_profile,
+        "operator_review_status": "pending",
+        "persistence_performed": False,
+        "hardware_commands_sent": False,
+        "physical_output_observed": False,
+        "preview_only": True,
+        "non_actuating": True,
     }
