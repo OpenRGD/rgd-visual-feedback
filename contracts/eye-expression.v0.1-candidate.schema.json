@@ -31,7 +31,7 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 64,
-      "pattern": "^[^\\x00-\\x1F]+$"
+      "pattern": "^[^\\x00-\\x1F\\x7F]+$"
     },
     "origin": {
       "enum": [
