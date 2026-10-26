@@ -40,6 +40,8 @@ def check() -> None:
 
     expression = load(FIXTURES / names[0][1])
     proposal = load(FIXTURES / names[1][1])
+    # A second invented name must conform without changing schemas/software.
+    validators[1].validate(load(FIXTURES / "cognitive-curiosita-gentile.proposal.json"))
     invalid_expression = [
         {"animation": {**expression["animation"], "blink_interval_ms": 100}},
         {"palette": {**expression["palette"], "ring_brightness_pct": 100}},
@@ -69,7 +71,39 @@ def check() -> None:
             pass
         else:
             raise AssertionError(f"Cognitive schema accepted invalid patch keys: {tuple(item)}")
-    print("EXPRESSIVE CONTRACTS: 2 positive fixtures + 11 negative schema cases OK")
+    # The original v0.1 scene schema is frozen; new eye targets live only
+    # under an explicit v0.2 profile version.
+    v01_schema = load(SCHEMAS / "visual-studio-profile.v0.1-candidate.schema.json")
+    v02_schema = load(SCHEMAS / "visual-studio-profile.v0.2-candidate.schema.json")
+    Draft202012Validator.check_schema(v01_schema)
+    Draft202012Validator.check_schema(v02_schema)
+    v01_validator = Draft202012Validator(v01_schema, format_checker=FormatChecker())
+    v02_validator = Draft202012Validator(v02_schema, format_checker=FormatChecker())
+    old_profile = load(ROOT / "profiles" / "paky01-studio.preview.json")
+    new_profile = load(ROOT / "profiles" / "paky02-expressive-studio.preview.json")
+    v01_validator.validate(old_profile)
+    v02_validator.validate(new_profile)
+    for invalid in [
+        {**new_profile, "schema_version": "openrgd.visual-studio.profile.v0.1-candidate"},
+        {**new_profile, "expressions": {}},
+        {**new_profile, "preview_only": False},
+    ]:
+        if invalid["expressions"] == {}:
+            # The reference is then absent from the catalog, which the
+            # Python engine rejects. Validate this invariant separately.
+            from rgd_visual.studio import validate_profile
+            try:
+                validate_profile(invalid)
+            except ValueError:
+                continue
+            raise AssertionError("Engine accepted missing eye expression ref")
+        try:
+            v02_validator.validate(invalid)
+        except ValidationError:
+            pass
+        else:
+            raise AssertionError("v0.2 schema accepted wrong version or permissions")
+    print("EXPRESSIVE CONTRACTS: 5 positive fixtures + 14 negative checks OK")
 
 
 if __name__ == "__main__":

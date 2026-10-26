@@ -1,0 +1,477 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openrgd.org/candidate/visual/studio-profile.v0.2",
+  "title": "Visual Effects Studio scenes with expressive eyes v0.2 candidate — preview only",
+  "description": "New additive profile version; v0.1 contract remains unchanged. Safe profile-local expression catalog and typed logical eye output targets, no hardware execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "robot_id",
+    "revision",
+    "zones",
+    "scenes",
+    "mappings",
+    "fallback_scene",
+    "non_actuating",
+    "preview_only",
+    "expressions"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "openrgd.visual-studio.profile.v0.2-candidate"
+    },
+    "robot_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,79}$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "zones": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "$ref": "#/$defs/zone"
+      }
+    },
+    "scenes": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 64,
+      "propertyNames": {
+        "$ref": "#/$defs/name"
+      },
+      "additionalProperties": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 32,
+        "items": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "zone_id",
+                "effect",
+                "color",
+                "brightness"
+              ],
+              "properties": {
+                "zone_id": {
+                  "$ref": "#/$defs/name"
+                },
+                "effect": {
+                  "enum": [
+                    "solid",
+                    "pulse",
+                    "chase",
+                    "wave"
+                  ]
+                },
+                "color": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$"
+                },
+                "brightness": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "zone_id",
+                "effect",
+                "expression_id"
+              ],
+              "properties": {
+                "zone_id": {
+                  "$ref": "#/$defs/name"
+                },
+                "effect": {
+                  "const": "eye_expression"
+                },
+                "expression_id": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{2,47}$"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "mappings": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/mapping"
+      }
+    },
+    "fallback_scene": {
+      "$ref": "#/$defs/name"
+    },
+    "non_actuating": {
+      "const": true
+    },
+    "preview_only": {
+      "const": true
+    },
+    "expressions": {
+      "type": "object",
+      "maxProperties": 32,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]{2,47}$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/eyeExpression"
+      }
+    }
+  },
+  "$defs": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]{0,79}$"
+    },
+    "event": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9._-]{0,99}$"
+    },
+    "zone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "adapter_id",
+        "capabilities",
+        "binding_status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/name"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "adapter_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 80
+        },
+        "capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "solid",
+              "pulse",
+              "chase",
+              "wave",
+              "eye_expression"
+            ]
+          }
+        },
+        "binding_status": {
+          "enum": [
+            "planned",
+            "operator_reported"
+          ]
+        }
+      }
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zone_id",
+        "effect",
+        "color",
+        "brightness"
+      ],
+      "properties": {
+        "zone_id": {
+          "$ref": "#/$defs/name"
+        },
+        "effect": {
+          "enum": [
+            "solid",
+            "pulse",
+            "chase",
+            "wave"
+          ]
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "brightness": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "event",
+        "scene",
+        "priority"
+      ],
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/name"
+        },
+        "event": {
+          "$ref": "#/$defs/event"
+        },
+        "scene": {
+          "$ref": "#/$defs/name"
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "eyeExpression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "expression_id",
+        "label",
+        "origin",
+        "affect",
+        "eyes",
+        "palette",
+        "animation",
+        "duration_ms",
+        "preview_only",
+        "non_actuating",
+        "claims_emotion_as_internal_state"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "openrgd.visual.eye-expression.v0.1-candidate"
+        },
+        "expression_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{2,47}$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[^\\x00-\\x1F\\x7F]+$"
+        },
+        "origin": {
+          "enum": [
+            "operator",
+            "cognitive_proposal"
+          ]
+        },
+        "affect": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "valence",
+            "arousal",
+            "intensity"
+          ],
+          "properties": {
+            "valence": {
+              "type": "number",
+              "minimum": -1,
+              "maximum": 1
+            },
+            "arousal": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "intensity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "eyes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "left",
+            "right"
+          ],
+          "properties": {
+            "left": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "openness",
+                "gaze_x",
+                "gaze_y",
+                "pupil_scale",
+                "brow_tilt_deg"
+              ],
+              "properties": {
+                "openness": {
+                  "type": "number",
+                  "minimum": 0.12,
+                  "maximum": 1
+                },
+                "gaze_x": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "gaze_y": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "pupil_scale": {
+                  "type": "number",
+                  "minimum": 0.6,
+                  "maximum": 1.4
+                },
+                "brow_tilt_deg": {
+                  "type": "number",
+                  "minimum": -20,
+                  "maximum": 20
+                }
+              }
+            },
+            "right": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "openness",
+                "gaze_x",
+                "gaze_y",
+                "pupil_scale",
+                "brow_tilt_deg"
+              ],
+              "properties": {
+                "openness": {
+                  "type": "number",
+                  "minimum": 0.12,
+                  "maximum": 1
+                },
+                "gaze_x": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "gaze_y": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "pupil_scale": {
+                  "type": "number",
+                  "minimum": 0.6,
+                  "maximum": 1.4
+                },
+                "brow_tilt_deg": {
+                  "type": "number",
+                  "minimum": -20,
+                  "maximum": 20
+                }
+              }
+            }
+          }
+        },
+        "palette": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "background",
+            "iris",
+            "accent",
+            "ring_brightness_pct"
+          ],
+          "properties": {
+            "background": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "iris": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "accent": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "ring_brightness_pct": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 40
+            }
+          }
+        },
+        "animation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "blink_interval_ms",
+            "blink_duration_ms"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "still",
+                "breathe",
+                "scan"
+              ]
+            },
+            "blink_interval_ms": {
+              "type": "integer",
+              "minimum": 2500,
+              "maximum": 12000
+            },
+            "blink_duration_ms": {
+              "type": "integer",
+              "minimum": 80,
+              "maximum": 250
+            }
+          }
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 500,
+          "maximum": 12000
+        },
+        "preview_only": {
+          "const": true
+        },
+        "non_actuating": {
+          "const": true
+        },
+        "claims_emotion_as_internal_state": {
+          "const": false
+        }
+      }
+    }
+  }
+}
