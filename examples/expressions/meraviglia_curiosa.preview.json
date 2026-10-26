@@ -1,0 +1,42 @@
+{
+  "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+  "expression_id": "meraviglia_curiosa",
+  "label": "Meraviglia curiosa",
+  "origin": "cognitive_proposal",
+  "affect": {
+    "valence": 0.76,
+    "arousal": 0.61,
+    "intensity": 0.74
+  },
+  "eyes": {
+    "left": {
+      "openness": 0.92,
+      "gaze_x": 0.22,
+      "gaze_y": -0.18,
+      "pupil_scale": 1.17,
+      "brow_tilt_deg": -9
+    },
+    "right": {
+      "openness": 0.88,
+      "gaze_x": 0.22,
+      "gaze_y": -0.18,
+      "pupil_scale": 1.17,
+      "brow_tilt_deg": 11
+    }
+  },
+  "palette": {
+    "background": "#081424",
+    "iris": "#4FE3D0",
+    "accent": "#67DEFF",
+    "ring_brightness_pct": 25
+  },
+  "animation": {
+    "mode": "breathe",
+    "blink_interval_ms": 5200,
+    "blink_duration_ms": 140
+  },
+  "duration_ms": 6200,
+  "preview_only": true,
+  "non_actuating": true,
+  "claims_emotion_as_internal_state": false
+}

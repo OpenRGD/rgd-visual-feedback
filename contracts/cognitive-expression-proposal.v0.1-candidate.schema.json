@@ -1,0 +1,278 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openrgd.org/candidate/visual/cognitive-expression-proposal.v0.1",
+  "title": "Cognitive Visual Expression Proposal candidate v0.1 — no hardware authority",
+  "description": "Future cognitive output, preview-only. Allows a new expression_id (open vocabulary) but no arbitrary programs, URLs or commands.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "proposal_id",
+    "robot_id",
+    "source_module",
+    "source_session_id",
+    "source_sequence",
+    "requested_at_utc",
+    "presentation",
+    "approval_required_for_persistence",
+    "hardware_execution_authorized",
+    "expression"
+  ],
+  "properties": {
+    "contract": {
+      "const": "openrgd.visual.cognitive-expression-proposal.v0.1-candidate"
+    },
+    "proposal_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{32}$"
+    },
+    "robot_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,79}$"
+    },
+    "source_module": {
+      "const": "org.openrgd.cognition"
+    },
+    "source_session_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{32}$"
+    },
+    "source_sequence": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854776000
+    },
+    "requested_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "presentation": {
+      "const": "transient_preview"
+    },
+    "approval_required_for_persistence": {
+      "const": true
+    },
+    "hardware_execution_authorized": {
+      "const": false
+    },
+    "expression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "expression_id",
+        "label",
+        "origin",
+        "affect",
+        "eyes",
+        "palette",
+        "animation",
+        "duration_ms",
+        "preview_only",
+        "non_actuating",
+        "claims_emotion_as_internal_state"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "openrgd.visual.eye-expression.v0.1-candidate"
+        },
+        "expression_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{2,47}$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[^\\x00-\\x1F\\x7F]+$"
+        },
+        "origin": {
+          "const": "cognitive_proposal"
+        },
+        "affect": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "valence",
+            "arousal",
+            "intensity"
+          ],
+          "properties": {
+            "valence": {
+              "type": "number",
+              "minimum": -1,
+              "maximum": 1
+            },
+            "arousal": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "intensity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "eyes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "left",
+            "right"
+          ],
+          "properties": {
+            "left": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "openness",
+                "gaze_x",
+                "gaze_y",
+                "pupil_scale",
+                "brow_tilt_deg"
+              ],
+              "properties": {
+                "openness": {
+                  "type": "number",
+                  "minimum": 0.12,
+                  "maximum": 1
+                },
+                "gaze_x": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "gaze_y": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "pupil_scale": {
+                  "type": "number",
+                  "minimum": 0.6,
+                  "maximum": 1.4
+                },
+                "brow_tilt_deg": {
+                  "type": "number",
+                  "minimum": -20,
+                  "maximum": 20
+                }
+              }
+            },
+            "right": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "openness",
+                "gaze_x",
+                "gaze_y",
+                "pupil_scale",
+                "brow_tilt_deg"
+              ],
+              "properties": {
+                "openness": {
+                  "type": "number",
+                  "minimum": 0.12,
+                  "maximum": 1
+                },
+                "gaze_x": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "gaze_y": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "pupil_scale": {
+                  "type": "number",
+                  "minimum": 0.6,
+                  "maximum": 1.4
+                },
+                "brow_tilt_deg": {
+                  "type": "number",
+                  "minimum": -20,
+                  "maximum": 20
+                }
+              }
+            }
+          }
+        },
+        "palette": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "background",
+            "iris",
+            "accent",
+            "ring_brightness_pct"
+          ],
+          "properties": {
+            "background": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "iris": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "accent": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "ring_brightness_pct": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 40
+            }
+          }
+        },
+        "animation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "blink_interval_ms",
+            "blink_duration_ms"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "still",
+                "breathe",
+                "scan"
+              ]
+            },
+            "blink_interval_ms": {
+              "type": "integer",
+              "minimum": 2500,
+              "maximum": 12000
+            },
+            "blink_duration_ms": {
+              "type": "integer",
+              "minimum": 80,
+              "maximum": 250
+            }
+          }
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 500,
+          "maximum": 12000
+        },
+        "preview_only": {
+          "const": true
+        },
+        "non_actuating": {
+          "const": true
+        },
+        "claims_emotion_as_internal_state": {
+          "const": false
+        }
+      }
+    }
+  }
+}
