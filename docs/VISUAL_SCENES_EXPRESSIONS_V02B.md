@@ -25,11 +25,11 @@ Run on an independent checkout/worktree with the v0.2B branch, **not by switchin
 
 ```bash
 python3 scripts/studio_preview.py --profile profiles/paky02-expressive-studio.preview.json --source system --event operator.welcome
-python3 scripts/stage_expression_preview.py --profile profiles/paky02-expressive-studio.preview.json --proposal examples/expressions/cognitive-meraviglia.proposal.json --scene welcome
+python3 scripts/stage_expression_preview.py --profile profiles/paky02-expressive-studio.preview.json --proposal examples/expressions/cognitive-curiosita-gentile.proposal.json --scene welcome
 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
 ```
 
-The first output contains RGB, room light and eye frame intents. The second prints a candidate updated profile and marks persistence/hardware execution as false. All outputs are simulated. No physical devices are opened or files written.
+The first output contains RGB, room light and eye frame intents. The second prints a candidate updated profile and marks persistence/hardware execution as false. All outputs are simulated. No physical devices are opened or files written. The second candidate introduces the entirely new name `curiosita_gentile`, proving that expressive names can be added as data without changing the Python engine.
 
 ## Next wave
 
