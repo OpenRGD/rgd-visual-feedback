@@ -40,6 +40,8 @@ def check() -> None:
 
     expression = load(FIXTURES / names[0][1])
     proposal = load(FIXTURES / names[1][1])
+    # A second invented name must conform without changing schemas/software.
+    validators[1].validate(load(FIXTURES / "cognitive-curiosita-gentile.proposal.json"))
     invalid_expression = [
         {"animation": {**expression["animation"], "blink_interval_ms": 100}},
         {"palette": {**expression["palette"], "ring_brightness_pct": 100}},
@@ -101,7 +103,7 @@ def check() -> None:
             pass
         else:
             raise AssertionError("v0.2 schema accepted wrong version or permissions")
-    print("EXPRESSIVE CONTRACTS: 4 positive fixtures + 14 negative checks OK")
+    print("EXPRESSIVE CONTRACTS: 5 positive fixtures + 14 negative checks OK")
 
 
 if __name__ == "__main__":
