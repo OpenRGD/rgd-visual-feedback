@@ -124,7 +124,7 @@ class ExpressiveSceneV02Tests(unittest.TestCase):
         p["zones"][-1]["capabilities"] = ["solid"]
         result = preview(p, "studio", "preview.meraviglia_curiosa")
         eye = result["outputs"][0]
-        self.assertEqual(eye["reason"], "planned_zone")
+        self.assertEqual(eye["reason"], "effect_not_supported_by_declared_zone")
         self.assertFalse(eye["eligible_by_declared_capabilities"])
 
 
