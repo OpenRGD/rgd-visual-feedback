@@ -1,6 +1,6 @@
 # Voice I/O → Visual Feedback — explicit lifecycle integration (v0.3 candidate)
 
-**Status:** The Visual Feedback v0.2 BLE service has been operator-tested on Paky-01. This v0.3 candidate adds an **optional** local event-ingress command and synthetic tests. It has **not** been deployed or validated against a running Voice Studio instance. The `rgd-voice` producer is not yet published; this document is an implementation contract, not evidence of an end-to-end live connection.
+**Status:** The Visual Feedback v0.2 BLE service has been operator-tested on Paky-01. This v0.3 candidate adds an **optional** local event-ingress command and synthetic tests. It has **not** been deployed or validated against a running Voice Studio instance. The `rgd-voice` repository is published, and its PR #2 contains an optional producer, but **the two live services have not been physically commissioned together**; this document is an implementation contract, not LED acceptance evidence.
 
 ## No duplicated hardware owner
 
@@ -57,7 +57,7 @@ The ordering guard is memory-only, remembers at most 32 retired producer session
 2. Use a single ordered asynchronous event sender; do not block the audio callback, main playback thread, or deterministic robot runtime. Bound connect/read timeouts and treat Visual unavailability as nonfatal.
 3. Generate a new session id when the voice producer starts/restarts. Keep sequence monotonic within the session.
 4. Do not route errors from the LED subsystem back into Voice Studio's critical path.
-5. Reconcile the new candidate event names with `OpenRGD/rgd-voice` when that repository has been published.
+5. Reconcile the event names with the now-published `OpenRGD/rgd-voice` candidate: [Voice PR #2](https://github.com/OpenRGD/rgd-voice/pull/2) provides the optional Unix sender and real legacy VAD PCM/STT callbacks; [Voice PR #4](https://github.com/OpenRGD/rgd-voice/pull/4) separately covers native HTML audio playback.
 6. Test playback start/end, reconnect, rapid turn-taking, no-response, duplicate, stale-session, and BLE-disconnected cases **on the mini-PC**, then tag a release.
 
 ## Operator rollout (NOT automatic)
@@ -74,3 +74,9 @@ python3 scripts/voice_event_smoke.py --apply    # explicitly sends events (updat
 This is **not** a substitute for actual Voice Studio lifecycle evidence.
 
 **Safety:** Visual states are UI effects, not motor/boot readiness, perception accuracy, safety authorization or Chronon evidence.
+
+## VOICE-0.4D commissioning reference (2026-10-26)
+
+The Voice team has provided a reversible hardware canary at [VOICE-0.4D real lifecycle](https://github.com/OpenRGD/rgd-voice/blob/feat/visual-feedback-lifecycle-v0.3.2/docs/VOICE-0.4D-REAL-LIFECYCLE-CANARY.md). Its read-only monitor reports desired, applied and BLE connected independently while the *existing* v0.2 systemd user service is deliberately paused and a v0.3 candidate daemon is run in the foreground. This repository remains sole owner of BLE; no extra LED driver is added to Voice.
+
+Keep this PR **Draft** until real BC-Master VAD, Whisper, actual Bose playback and visible LED transitions have been observed on Paky-01. Do not run two Voice producer sessions (browser preview and foreground VAD) concurrently with this one-session gate. Browser/PCM are not physical microphone/speaker attestations.
