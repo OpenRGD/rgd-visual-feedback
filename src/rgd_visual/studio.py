@@ -181,6 +181,7 @@ def preview(profile: dict, source: str, event: str) -> dict:
                 **common,
                 "expression_id": target["expression_id"],
                 "frame_plan": frame,
+                "reason": "effect_not_supported_by_declared_zone" if not declared else common["reason"],
             })
         else:
             # Preserve v0.1 LED preview field names and values exactly.
