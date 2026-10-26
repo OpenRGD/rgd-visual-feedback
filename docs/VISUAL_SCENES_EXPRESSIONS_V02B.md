@@ -14,7 +14,7 @@
 
 1. **Author or propose.** Operator or a future Cognitive producer creates a new named expression as bounded numeric parameters; no code change required. A `cognitive_proposal` has no authenticated identity nor execution authority in v0.2B.
 2. **Preview.** The parser validates open names, gaze, pupil, palette, blink, duration and non-actuating flags. `Paky-02` fixture shows a single `welcome` scene combining an RGB ring, future room light and two expressive mini displays, with the display zone clearly **planned**.
-3. **Review/Stage.** Visual Studio may stage an expression into the *local browser draft* catalog, and only on explicit operator action assign it to a scene. Browser localStorage is **not** the robot's persistent catalog or trusted policy store.
+3. **Review/Stage.** Visual Studio may stage an expression into the *local browser draft* catalog, and only on explicit operator action assign it to a scene. The Python `stage_expression_preview(profile, candidate, scene)` API does the same for a COPY of a v0.2 profile, with bounds, robot identity checks and no disk writes. A Cognitive-sourced expression must arrive in the complete candidate proposal envelope; a standalone recipe with `origin:cognitive_proposal` is rejected. Browser localStorage is **not** the robot's persistent catalog or trusted policy store.
 4. **Apply later.** A later wave must define a separately permissioned durable catalog with review/revision/rollback, source identity/authentication, TTL/arbitration, physical PERIPH bindings and verified display hardware.
 
 The current expression recipe's `origin` records its proposed provenance, not approval or trust. A Cognitive proposal that has been validated may be used for preview only; it cannot silently update scenes or install itself.
@@ -25,10 +25,11 @@ Run on an independent checkout/worktree with the v0.2B branch, **not by switchin
 
 ```bash
 python3 scripts/studio_preview.py --profile profiles/paky02-expressive-studio.preview.json --source system --event operator.welcome
+python3 scripts/stage_expression_preview.py --profile profiles/paky02-expressive-studio.preview.json --proposal examples/expressions/cognitive-meraviglia.proposal.json --scene welcome
 PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
 ```
 
-The first output contains RGB, room light and eye frame intents. All three are simulated. No physical devices are opened.
+The first output contains RGB, room light and eye frame intents. The second prints a candidate updated profile and marks persistence/hardware execution as false. All outputs are simulated. No physical devices are opened or files written.
 
 ## Next wave
 
