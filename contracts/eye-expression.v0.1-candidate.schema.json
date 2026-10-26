@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openrgd.org/candidate/visual/eye-expression.v0.1",
+  "title": "Visual Studio expressive eye recipe candidate v0.1 — preview only",
+  "description": "A display-independent, declarative expressive recipe. A label is a visual metaphor, not a claim of felt emotion. No device writes, executable assets or arbitrary shader code.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "expression_id",
+    "label",
+    "origin",
+    "affect",
+    "eyes",
+    "palette",
+    "animation",
+    "duration_ms",
+    "preview_only",
+    "non_actuating",
+    "claims_emotion_as_internal_state"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "openrgd.visual.eye-expression.v0.1-candidate"
+    },
+    "expression_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{2,47}$"
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[^\\x00-\\x1F]+$"
+    },
+    "origin": {
+      "enum": [
+        "operator",
+        "cognitive_proposal"
+      ]
+    },
+    "affect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valence",
+        "arousal",
+        "intensity"
+      ],
+      "properties": {
+        "valence": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "arousal": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "intensity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "eyes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "left",
+        "right"
+      ],
+      "properties": {
+        "left": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "openness",
+            "gaze_x",
+            "gaze_y",
+            "pupil_scale",
+            "brow_tilt_deg"
+          ],
+          "properties": {
+            "openness": {
+              "type": "number",
+              "minimum": 0.12,
+              "maximum": 1
+            },
+            "gaze_x": {
+              "type": "number",
+              "minimum": -0.6,
+              "maximum": 0.6
+            },
+            "gaze_y": {
+              "type": "number",
+              "minimum": -0.6,
+              "maximum": 0.6
+            },
+            "pupil_scale": {
+              "type": "number",
+              "minimum": 0.6,
+              "maximum": 1.4
+            },
+            "brow_tilt_deg": {
+              "type": "number",
+              "minimum": -20,
+              "maximum": 20
+            }
+          }
+        },
+        "right": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "openness",
+            "gaze_x",
+            "gaze_y",
+            "pupil_scale",
+            "brow_tilt_deg"
+          ],
+          "properties": {
+            "openness": {
+              "type": "number",
+              "minimum": 0.12,
+              "maximum": 1
+            },
+            "gaze_x": {
+              "type": "number",
+              "minimum": -0.6,
+              "maximum": 0.6
+            },
+            "gaze_y": {
+              "type": "number",
+              "minimum": -0.6,
+              "maximum": 0.6
+            },
+            "pupil_scale": {
+              "type": "number",
+              "minimum": 0.6,
+              "maximum": 1.4
+            },
+            "brow_tilt_deg": {
+              "type": "number",
+              "minimum": -20,
+              "maximum": 20
+            }
+          }
+        }
+      }
+    },
+    "palette": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "background",
+        "iris",
+        "accent",
+        "ring_brightness_pct"
+      ],
+      "properties": {
+        "background": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "iris": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "accent": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "ring_brightness_pct": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 40
+        }
+      }
+    },
+    "animation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "blink_interval_ms",
+        "blink_duration_ms"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "still",
+            "breathe",
+            "scan"
+          ]
+        },
+        "blink_interval_ms": {
+          "type": "integer",
+          "minimum": 2500,
+          "maximum": 12000
+        },
+        "blink_duration_ms": {
+          "type": "integer",
+          "minimum": 80,
+          "maximum": 250
+        }
+      }
+    },
+    "duration_ms": {
+      "type": "integer",
+      "minimum": 500,
+      "maximum": 12000
+    },
+    "preview_only": {
+      "const": true
+    },
+    "non_actuating": {
+      "const": true
+    },
+    "claims_emotion_as_internal_state": {
+      "const": false
+    }
+  }
+}
