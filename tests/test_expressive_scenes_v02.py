@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 import unittest
 
-from rgd_visual.studio import SCHEMA, SCHEMA_V02, preview, validate_profile
+from rgd_visual.studio import SCHEMA, SCHEMA_V02, preview, stage_expression_preview, validate_profile
 
 ROOT = Path(__file__).resolve().parents[1]
 OLD = ROOT / "profiles/paky01-studio.preview.json"
@@ -118,6 +118,64 @@ class ExpressiveSceneV02Tests(unittest.TestCase):
         for invalid in invalids:
             with self.subTest(invalid=invalid), self.assertRaises(ValueError):
                 validate_profile(invalid)
+
+    def test_cognitive_proposal_stages_new_expression_without_mutation(self):
+        p = deepcopy(self.new)
+        proposal = json.loads((ROOT / "examples/expressions/cognitive-meraviglia.proposal.json")
+                              .read_text(encoding="utf-8"))
+        invented = deepcopy(proposal["expression"])
+        invented["expression_id"] = "gioia_riflessiva"
+        invented["label"] = "Gioia riflessiva"
+        invented["eyes"]["right"]["openness"] = 0.49
+        proposal["expression"] = invented
+        result = stage_expression_preview(p, proposal, "welcome")
+        self.assertEqual(result["expression_id"], "gioia_riflessiva")
+        self.assertTrue(result["catalog_changed"])
+        self.assertTrue(result["preview_only"])
+        self.assertEqual(result["operator_review_status"], "pending")
+        self.assertFalse(result["persistence_performed"])
+        self.assertFalse(result["hardware_commands_sent"])
+        self.assertFalse(result["physical_output_observed"])
+        self.assertNotIn("gioia_riflessiva", p["expressions"])
+        self.assertIn("gioia_riflessiva", result["profile_candidate"]["expressions"])
+        outcome = preview(result["profile_candidate"], "system", "operator.welcome")
+        staged = next(x for x in outcome["outputs"] if x["effect"] == "eye_expression")
+        self.assertEqual(staged["expression_id"], "gioia_riflessiva")
+        self.assertEqual(staged["frame_plan"]["eye_frames"]["right"]["openness"], 0.49)
+
+    def test_cross_robot_cognitive_and_unwrapped_proposals_rejected(self):
+        proposal = json.loads((ROOT / "examples/expressions/cognitive-meraviglia.proposal.json")
+                              .read_text(encoding="utf-8"))
+        with self.assertRaisesRegex(ValueError, "robot id"):
+            stage_expression_preview({**self.new, "robot_id": "paky-01"}, proposal, "welcome")
+        with self.assertRaisesRegex(ValueError, "full validated proposal"):
+            stage_expression_preview(self.new, proposal["expression"], "welcome")
+
+    def test_operator_recipes_allowed_but_never_auto_persisted(self):
+        recipe = deepcopy(self.new["expressions"]["meraviglia_curiosa"])
+        recipe["origin"] = "operator"
+        recipe["expression_id"] = "calma_attenta"
+        staged = stage_expression_preview(self.new, recipe, "eyes_only")
+        self.assertEqual(staged["source_kind"], "operator")
+        self.assertFalse(staged["persistence_performed"])
+        self.assertNotIn(recipe["expression_id"], self.new["expressions"])
+
+    def test_catalog_replacement_requires_explicit_preview_flag(self):
+        recipe = deepcopy(self.new["expressions"]["meraviglia_curiosa"])
+        recipe["origin"] = "operator"
+        with self.assertRaisesRegex(ValueError, "explicit replacement"):
+            stage_expression_preview(self.new, recipe, "welcome")
+        staged = stage_expression_preview(self.new, recipe, "welcome", replace_existing=True)
+        self.assertEqual(staged["profile_candidate"]["expressions"][recipe["expression_id"]]["origin"], "operator")
+        self.assertEqual(self.new["expressions"][recipe["expression_id"]]["origin"], "cognitive_proposal")
+
+    def test_wrong_capability_and_legacy_staging_rejected(self):
+        p = deepcopy(self.new)
+        p["zones"][-1]["capabilities"] = ["solid"]
+        with self.assertRaisesRegex(ValueError, "capability"):
+            stage_expression_preview(p, self.new["expressions"]["meraviglia_curiosa"], "welcome")
+        with self.assertRaisesRegex(ValueError, "v0.2"):
+            stage_expression_preview(self.old, self.new["expressions"]["meraviglia_curiosa"], "welcome")
 
     def test_v02_undefined_zone_capability_remains_non_eligible(self):
         p = deepcopy(self.new)
