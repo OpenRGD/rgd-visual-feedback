@@ -160,7 +160,7 @@ class ExpressionCatalogTests(unittest.TestCase):
         record["expression"]["label"] = "Tampered"
         record_path.write_text(json.dumps(record), encoding="utf-8")
         record_path.chmod(0o600)
-        with self.assertRaisesRegex(ValueError, "hash mismatch"):
+        with self.assertRaisesRegex(ValueError, "integrity mismatch"):
             self.store.history("curiosita_gentile")
 
     def test_chain_previous_hash_rejects_changed_earlier_revision(self):
