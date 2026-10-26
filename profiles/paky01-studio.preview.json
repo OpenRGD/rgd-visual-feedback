@@ -1,0 +1,137 @@
+{
+  "schema_version": "openrgd.visual-studio.profile.v0.1-candidate",
+  "robot_id": "paky-01",
+  "revision": 1,
+  "zones": [
+    {
+      "id": "face-ring",
+      "label": "Anello RGB · testa",
+      "adapter_id": "miracles-star-ble",
+      "capabilities": [
+        "solid"
+      ],
+      "binding_status": "operator_reported"
+    },
+    {
+      "id": "room-lights",
+      "label": "Luci ambiente · future",
+      "adapter_id": null,
+      "capabilities": [
+        "solid",
+        "pulse"
+      ],
+      "binding_status": "planned"
+    }
+  ],
+  "scenes": {
+    "idle": [
+      {
+        "zone_id": "face-ring",
+        "effect": "solid",
+        "color": "#FFFFFF",
+        "brightness": 10
+      }
+    ],
+    "listening": [
+      {
+        "zone_id": "face-ring",
+        "effect": "solid",
+        "color": "#0050FF",
+        "brightness": 35
+      }
+    ],
+    "thinking": [
+      {
+        "zone_id": "face-ring",
+        "effect": "solid",
+        "color": "#9600FF",
+        "brightness": 35
+      }
+    ],
+    "speaking": [
+      {
+        "zone_id": "face-ring",
+        "effect": "solid",
+        "color": "#00FF46",
+        "brightness": 35
+      }
+    ],
+    "error": [
+      {
+        "zone_id": "face-ring",
+        "effect": "solid",
+        "color": "#FF0000",
+        "brightness": 30
+      }
+    ],
+    "off": [
+      {
+        "zone_id": "face-ring",
+        "effect": "solid",
+        "color": "#000000",
+        "brightness": 0
+      }
+    ],
+    "welcome": [
+      {
+        "zone_id": "face-ring",
+        "effect": "solid",
+        "color": "#40FAD2",
+        "brightness": 40
+      },
+      {
+        "zone_id": "room-lights",
+        "effect": "pulse",
+        "color": "#40FAD2",
+        "brightness": 30
+      }
+    ]
+  },
+  "mappings": [
+    {
+      "source": "voice",
+      "event": "listening.started",
+      "scene": "listening",
+      "priority": 50
+    },
+    {
+      "source": "voice",
+      "event": "inference.started",
+      "scene": "thinking",
+      "priority": 50
+    },
+    {
+      "source": "voice",
+      "event": "playback.started",
+      "scene": "speaking",
+      "priority": 50
+    },
+    {
+      "source": "voice",
+      "event": "playback.ended",
+      "scene": "idle",
+      "priority": 50
+    },
+    {
+      "source": "voice",
+      "event": "voice.error",
+      "scene": "error",
+      "priority": 90
+    },
+    {
+      "source": "voice",
+      "event": "voice.ready",
+      "scene": "idle",
+      "priority": 50
+    },
+    {
+      "source": "system",
+      "event": "operator.welcome",
+      "scene": "welcome",
+      "priority": 10
+    }
+  ],
+  "fallback_scene": "idle",
+  "non_actuating": true,
+  "preview_only": true
+}
