@@ -22,18 +22,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e .
       - name: Protocol and IPC tests
-        run: |
-          python -m unittest discover -s tests -v 2>&1 | tee /tmp/visual-unittest.log
-          exit ${PIPESTATUS[0]}
+        run: python -m unittest discover -s tests -v
       - name: Candidate Cognitive/eye schemas (offline, no device)
         run: |
           python -m pip install 'jsonschema==4.23.0'
-          python scripts/check_expression_schemas.py 2>&1 | tee /tmp/visual-schema.log
-          exit ${PIPESTATUS[0]}
-      - name: Preserve failure diagnostics for review
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: visual-offline-failure-diagnostics
-          path: /tmp/visual-*.log
-          if-no-files-found: ignore
+          python scripts/check_expression_schemas.py
