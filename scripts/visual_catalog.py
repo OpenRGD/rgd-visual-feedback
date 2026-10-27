@@ -37,6 +37,10 @@ def main(argv=None) -> int:
     queue.add_argument("--file", type=Path, required=True)
     commands.add_parser("pending", help="List queued / approved / rejected proposals (read-only)")
     commands.add_parser("list", help="List latest approved catalog revisions (read-only)")
+    snapshot = commands.add_parser("snapshot", help="Print bounded read-only JSON for Console import (no hardware)")
+    snapshot.add_argument("--expression", help="Optional single expression for large catalogs")
+    snapshot.add_argument("--without-proposals", action="store_true",
+                          help="Only export approved revision history; omit queued proposals")
     show = commands.add_parser("show", help="Display approved latest revision (read-only)")
     show.add_argument("--expression", required=True)
     hist = commands.add_parser("history", help="Display immutable-by-protocol revision history")
@@ -65,6 +69,9 @@ def main(argv=None) -> int:
             result = store.list_proposals()
         elif args.command == "list":
             result = store.list_catalog()
+        elif args.command == "snapshot":
+            result = store.export_snapshot(expression_id=args.expression,
+                                           include_proposals=not args.without_proposals)
         elif args.command == "show":
             result = store.show(args.expression)
         elif args.command == "history":
