@@ -8,6 +8,7 @@ from copy import deepcopy
 import json
 import os
 from pathlib import Path
+from unittest.mock import patch
 import stat
 import tempfile
 import unittest
@@ -39,6 +40,82 @@ class ExpressionCatalogTests(unittest.TestCase):
             proposal_id, expected_revision=expected,
             confirmation=f"APPROVE paky-02 {proposal_id}"
         )
+
+    def test_empty_catalog_snapshot_is_read_only(self):
+        snapshot = self.store.export_snapshot()
+        self.assertEqual(snapshot["schema_version"], "openrgd.visual.catalog-snapshot.v0.1-candidate")
+        self.assertEqual(snapshot["robot_id"], "paky-02")
+        self.assertEqual(snapshot["expressions"], [])
+        self.assertEqual(snapshot["proposals"], [])
+        self.assertFalse(snapshot["hardware_execution_authorized"])
+        self.assertFalse(self.path.exists())
+
+    def test_snapshot_exports_history_and_redacted_proposals_only(self):
+        cognitive = self.queue_cognitive()["proposal_id"]
+        self.approve(cognitive)
+        alternative = deepcopy(OPERATOR)
+        alternative["expression_id"] = "curiosita_gentile"
+        alternative["label"] = "Variante due"
+        operator = self.store.queue(alternative)["proposal_id"]
+        self.approve(operator, expected=1)
+        self.store.rollback("curiosita_gentile", to_revision=1, expected_revision=2,
+                            confirmation="ROLLBACK paky-02 curiosita_gentile TO 1")
+        output = self.store.export_snapshot(expression_id="curiosita_gentile")
+        self.assertEqual(len(output["expressions"]), 1)
+        entity = output["expressions"][0]
+        self.assertEqual(entity["latest_revision"], 3)
+        self.assertEqual([r["action"] for r in entity["revisions"]],
+                         ["approve", "approve", "rollback"])
+        self.assertEqual(entity["revisions"][0]["expression"],
+                         entity["revisions"][2]["expression"])
+        self.assertEqual(len(output["proposals"]), 2)
+        self.assertEqual({p["status"] for p in output["proposals"]}, {"approved"})
+        self.assertTrue(output["integrity_validated_during_export"])
+        self.assertTrue(output["reader_must_not_trust_as_attested"])
+        self.assertFalse(output["hardware_execution_authorized"])
+        text = json.dumps(output)
+        for forbidden in ("source_session_id", "source_envelope", "device_address", ".catalog.lock"):
+            self.assertNotIn(forbidden, text)
+        self.assertFalse((self.path / "paky-02" / "snapshot.json").exists())
+        self.assertEqual(len(self.store.history("curiosita_gentile")), 3)
+        no_proposals = self.store.export_snapshot(include_proposals=False)
+        self.assertEqual(no_proposals["proposals"], [])
+
+    def test_snapshot_pending_recipe_is_viewable_not_approved(self):
+        self.queue_cognitive()
+        output = self.store.export_snapshot()
+        self.assertEqual(output["expressions"], [])
+        self.assertEqual(output["proposals"][0]["status"], "pending")
+        self.assertEqual(output["proposals"][0]["expression"]["expression_id"], "curiosita_gentile")
+        self.assertNotIn("source_envelope", output["proposals"][0])
+
+    def test_export_refuses_unbounded_history_or_missing_id(self):
+        proposal_id = self.queue_cognitive()["proposal_id"]
+        self.approve(proposal_id)
+        with self.assertRaisesRegex(ValueError, "does not exist"):
+            self.store.export_snapshot(expression_id="unknown_emotion")
+        with patch("rgd_visual.catalog.MAX_EXPORTED_REVISIONS", 0):
+            with self.assertRaisesRegex(ValueError, "64 revisions"):
+                self.store.export_snapshot()
+
+    def test_snapshot_rejects_corrupted_revision(self):
+        proposal_id = self.queue_cognitive()["proposal_id"]
+        self.approve(proposal_id)
+        file = self.store._revision_dir("curiosita_gentile") / "rev-000001.json"
+        data = json.loads(file.read_text())
+        data["expression"]["label"] = "tampered"
+        file.write_text(json.dumps(data), encoding="utf-8")
+        file.chmod(0o600)
+        with self.assertRaisesRegex(ValueError, "integrity mismatch"):
+            self.store.export_snapshot()
+
+    def test_snapshot_is_robot_scoped_and_read_does_not_change_revision(self):
+        proposal_id = self.queue_cognitive()["proposal_id"]
+        self.approve(proposal_id)
+        other = CatalogStore(self.path, "paky-01")
+        self.assertEqual(other.export_snapshot()["expressions"], [])
+        self.assertEqual(self.store.export_snapshot()["robot_id"], "paky-02")
+        self.assertEqual(len(self.store.history("curiosita_gentile")), 1)
 
     def test_queries_do_not_create_storage_or_connect_to_device(self):
         self.assertFalse(self.path.exists())
