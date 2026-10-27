@@ -10,6 +10,7 @@ import signal
 
 from .config import DEFAULT_CONFIG, load
 from .driver import MiraclesStarBLE
+from .voice_events import VoiceEventGate
 
 LOG = logging.getLogger(__name__)
 
@@ -19,7 +20,7 @@ def socket_path() -> Path:
     return Path(runtime) / "paky01-visual-feedback.sock"
 
 
-async def handle(reader: asyncio.StreamReader, writer: asyncio.StreamWriter, adapter: MiraclesStarBLE):
+async def handle(reader: asyncio.StreamReader, writer: asyncio.StreamWriter, adapter: MiraclesStarBLE, voice_gate: VoiceEventGate | None = None):
     try:
         raw = await asyncio.wait_for(reader.readline(), timeout=5)
         if len(raw) > 1024:
@@ -30,6 +31,12 @@ async def handle(reader: asyncio.StreamReader, writer: asyncio.StreamWriter, ada
         command = data.get("command")
         if command == "status":
             result = adapter.status()
+            if voice_gate is not None:
+                result["voice_event"] = voice_gate.status()
+        elif command == "voice_event":
+            if voice_gate is None:
+                raise ValueError("Voice event integration unavailable")
+            result = voice_gate.consume(data, adapter)
         elif command == "set_state":
             state = data.get("state")
             if not isinstance(state, str):
@@ -71,10 +78,11 @@ async def serve(config_path: Path) -> None:
         raise RuntimeError(f"Runtime dir missing: {path.parent}")
     await clear_stale_socket(path)
     adapter = MiraclesStarBLE(cfg)
+    voice_gate = VoiceEventGate()
     old_umask = os.umask(0o177)
     try:
         server = await asyncio.start_unix_server(
-            lambda r, w: handle(r, w, adapter), path=str(path), limit=2048
+            lambda r, w: handle(r, w, adapter, voice_gate), path=str(path), limit=2048
         )
     finally:
         os.umask(old_umask)
