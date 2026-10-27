@@ -9,6 +9,9 @@ from __future__ import annotations
 from copy import deepcopy
 import json
 from pathlib import Path
+from tempfile import TemporaryDirectory
+
+from rgd_visual.catalog import CatalogStore
 
 from jsonschema import Draft202012Validator, FormatChecker
 from jsonschema.exceptions import ValidationError
@@ -103,7 +106,33 @@ def check() -> None:
             pass
         else:
             raise AssertionError("v0.2 schema accepted wrong version or permissions")
+    # Read-only portable catalog export conformance: only locally validated,
+    # NO cognitive session envelope, no authenticated web API, no device data.
+    snapshot_schema = load(SCHEMAS / "visual-catalog-snapshot.v0.1-candidate.schema.json")
+    Draft202012Validator.check_schema(snapshot_schema)
+    snapshot_validator = Draft202012Validator(snapshot_schema, format_checker=FormatChecker())
+    with TemporaryDirectory(prefix="rgd-visual-schema-") as root:
+        store = CatalogStore(Path(root) / "catalog", "paky-02")
+        candidate = load(FIXTURES / "cognitive-curiosita-gentile.proposal.json")
+        info = store.queue(candidate)
+        snapshot_validator.validate(store.export_snapshot())
+        store.approve(info["proposal_id"], expected_revision=0,
+                      confirmation="APPROVE paky-02 " + info["proposal_id"])
+        snapshot = store.export_snapshot()
+        snapshot_validator.validate(snapshot)
+        for invalid in (
+            {**snapshot, "hardware_execution_authorized": True},
+            {**snapshot, "export_mode": "write_to_robot"},
+            {**snapshot, "source_envelope": {"credentials": "exposed"}},
+        ):
+            try:
+                snapshot_validator.validate(invalid)
+            except ValidationError:
+                pass
+            else:
+                raise AssertionError("Snapshot schema accepted untrusted field or false authority")
     print("EXPRESSIVE CONTRACTS: 5 positive fixtures + 14 negative checks OK")
+    print("CATALOG SNAPSHOT: pending/approved exports + 3 negative schemas OK")
 
 
 if __name__ == "__main__":

@@ -37,6 +37,11 @@ MAX_FILE_BYTES = 32 * 1024
 MAX_CATALOG_ENTRIES = 256   # Independent from Studio's 32 active scene recipes.
 MAX_REVISIONS_PER_ID = 512
 MAX_PROPOSALS = 4096
+SNAPSHOT_SCHEMA = "openrgd.visual.catalog-snapshot.v0.1-candidate"
+MAX_EXPORTED_EXPRESSIONS = 64
+MAX_EXPORTED_REVISIONS = 64
+MAX_EXPORTED_PROPOSALS = 128
+MAX_SNAPSHOT_BYTES = 2 * 1024 * 1024
 
 
 def _utc() -> str:
@@ -471,3 +476,101 @@ class CatalogStore:
             "scene_profile_modified": False, "service_restarted": False,
             "hardware_commands_sent": False, "hardware_execution_authorized": False,
         }
+
+
+    @contextmanager
+    def _shared_read_lock(self) -> Iterator[None]:
+        """Read coherent catalog snapshots without creating files or directories.
+
+        A missing catalog is a legitimately empty, read-only snapshot. If an
+        existing robot catalog has no valid lock, fail closed: never silently
+        export an inconsistent view during concurrent operator mutations.
+        """
+        if not self._check_existing():
+            yield
+            return
+        lock = self.robot_dir / ".catalog.lock"
+        fd = os.open(lock, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+        try:
+            info = os.fstat(fd)
+            if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid()
+                    or info.st_mode & 0o077):
+                raise PermissionError("Catalog lock must be user-owned and private")
+            fcntl.flock(fd, fcntl.LOCK_SH)
+            try:
+                yield
+            finally:
+                fcntl.flock(fd, fcntl.LOCK_UN)
+        finally:
+            os.close(fd)
+
+    def export_snapshot(self, *, expression_id: str | None = None,
+                        include_proposals: bool = True) -> dict:
+        """Portable, REDACTED, bounded read-only export of local approved data.
+
+        The exported proposal list includes preview-safe expression recipes
+        and status, NEVER raw cognitive envelopes/sessions/inputs or file paths.
+        No screen binding, BLE information, voice text or software credentials.
+        This method does not mutate the catalog or prove operator identity.
+        """
+        if expression_id is not None:
+            _id(expression_id, EXPR_ID, "expression_id")
+        if type(include_proposals) is not bool:
+            raise ValueError("include_proposals must be boolean")
+        with self._shared_read_lock():
+            entries = self.list_catalog()
+            if expression_id is not None:
+                entries = [e for e in entries if e["expression_id"] == expression_id]
+                if not entries:
+                    raise ValueError("Selected catalog expression does not exist")
+            if len(entries) > MAX_EXPORTED_EXPRESSIONS:
+                raise ValueError("Too many catalog expressions for a single snapshot")
+
+            expressions = []
+            for entry in entries:
+                identifier = entry["expression_id"]
+                revisions = self.history(identifier)
+                if not revisions or len(revisions) > MAX_EXPORTED_REVISIONS:
+                    raise ValueError("Snapshot history missing or exceeds 64 revisions")
+                if revisions[-1]["revision"] != entry["revision"]:
+                    raise ValueError("Snapshot latest revision changed during export")
+                expressions.append({
+                    "expression_id": identifier,
+                    "latest_revision": revisions[-1]["revision"],
+                    "revisions": deepcopy(revisions),
+                })
+
+            proposals = []
+            if include_proposals:
+                summary = self.list_proposals()
+                if expression_id is not None:
+                    summary = [e for e in summary if e["expression_id"] == expression_id]
+                if len(summary) > MAX_EXPORTED_PROPOSALS:
+                    raise ValueError("Too many proposals for a single snapshot")
+                for meta in summary:
+                    source = self._load_proposal(meta["proposal_id"])
+                    proposals.append({
+                        "proposal_id": meta["proposal_id"],
+                        "expression_id": source["expression"]["expression_id"],
+                        "source_kind": meta["source_kind"],
+                        "status": meta["status"],
+                        "submitted_at_utc": meta["submitted_at_utc"],
+                        "approval_revision": meta["approval_revision"],
+                        "expression": deepcopy(source["expression"]),
+                    })
+
+            result = {
+                "schema_version": SNAPSHOT_SCHEMA,
+                "robot_id": self.robot_id,
+                "generated_at_utc": _utc(),
+                "export_mode": "manual_read_only_snapshot",
+                "integrity_validated_during_export": True,
+                "reader_must_not_trust_as_attested": True,
+                "preview_only": True,
+                "hardware_execution_authorized": False,
+                "expressions": expressions,
+                "proposals": proposals,
+            }
+            if len(_canonical(result)) > MAX_SNAPSHOT_BYTES:
+                raise ValueError("Snapshot exceeds 2 MiB; export a selected expression")
+            return result

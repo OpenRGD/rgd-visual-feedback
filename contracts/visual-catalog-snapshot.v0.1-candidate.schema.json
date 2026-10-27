@@ -1,0 +1,454 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openrgd.org/candidate/visual/catalog-snapshot.v0.1",
+  "title": "Visual Expression Catalog — bounded offline read-only snapshot candidate v0.1",
+  "description": "Manual, redacted export of approved revisions and proposal preview metadata, not live authoritative device status. Approval never grants hardware execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "robot_id",
+    "generated_at_utc",
+    "export_mode",
+    "integrity_validated_during_export",
+    "reader_must_not_trust_as_attested",
+    "preview_only",
+    "hardware_execution_authorized",
+    "expressions",
+    "proposals"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "openrgd.visual.catalog-snapshot.v0.1-candidate"
+    },
+    "robot_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,79}$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "export_mode": {
+      "const": "manual_read_only_snapshot"
+    },
+    "integrity_validated_during_export": {
+      "const": true
+    },
+    "reader_must_not_trust_as_attested": {
+      "const": true
+    },
+    "preview_only": {
+      "const": true
+    },
+    "hardware_execution_authorized": {
+      "const": false
+    },
+    "expressions": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "expression_id",
+          "latest_revision",
+          "revisions"
+        ],
+        "properties": {
+          "expression_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{2,47}$"
+          },
+          "latest_revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 512
+          },
+          "revisions": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 64,
+            "items": {
+              "$ref": "#/$defs/catalogRevision"
+            }
+          }
+        }
+      }
+    },
+    "proposals": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/proposalPreview"
+      }
+    }
+  },
+  "$defs": {
+    "eyeExpression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "expression_id",
+        "label",
+        "origin",
+        "affect",
+        "eyes",
+        "palette",
+        "animation",
+        "duration_ms",
+        "preview_only",
+        "non_actuating",
+        "claims_emotion_as_internal_state"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "openrgd.visual.eye-expression.v0.1-candidate"
+        },
+        "expression_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{2,47}$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[^\\x00-\\x1F\\x7F]+$"
+        },
+        "origin": {
+          "enum": [
+            "operator",
+            "cognitive_proposal"
+          ]
+        },
+        "affect": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "valence",
+            "arousal",
+            "intensity"
+          ],
+          "properties": {
+            "valence": {
+              "type": "number",
+              "minimum": -1,
+              "maximum": 1
+            },
+            "arousal": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "intensity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "eyes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "left",
+            "right"
+          ],
+          "properties": {
+            "left": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "openness",
+                "gaze_x",
+                "gaze_y",
+                "pupil_scale",
+                "brow_tilt_deg"
+              ],
+              "properties": {
+                "openness": {
+                  "type": "number",
+                  "minimum": 0.12,
+                  "maximum": 1
+                },
+                "gaze_x": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "gaze_y": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "pupil_scale": {
+                  "type": "number",
+                  "minimum": 0.6,
+                  "maximum": 1.4
+                },
+                "brow_tilt_deg": {
+                  "type": "number",
+                  "minimum": -20,
+                  "maximum": 20
+                }
+              }
+            },
+            "right": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "openness",
+                "gaze_x",
+                "gaze_y",
+                "pupil_scale",
+                "brow_tilt_deg"
+              ],
+              "properties": {
+                "openness": {
+                  "type": "number",
+                  "minimum": 0.12,
+                  "maximum": 1
+                },
+                "gaze_x": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "gaze_y": {
+                  "type": "number",
+                  "minimum": -0.6,
+                  "maximum": 0.6
+                },
+                "pupil_scale": {
+                  "type": "number",
+                  "minimum": 0.6,
+                  "maximum": 1.4
+                },
+                "brow_tilt_deg": {
+                  "type": "number",
+                  "minimum": -20,
+                  "maximum": 20
+                }
+              }
+            }
+          }
+        },
+        "palette": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "background",
+            "iris",
+            "accent",
+            "ring_brightness_pct"
+          ],
+          "properties": {
+            "background": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "iris": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "accent": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "ring_brightness_pct": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 40
+            }
+          }
+        },
+        "animation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "blink_interval_ms",
+            "blink_duration_ms"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "still",
+                "breathe",
+                "scan"
+              ]
+            },
+            "blink_interval_ms": {
+              "type": "integer",
+              "minimum": 2500,
+              "maximum": 12000
+            },
+            "blink_duration_ms": {
+              "type": "integer",
+              "minimum": 80,
+              "maximum": 250
+            }
+          }
+        },
+        "duration_ms": {
+          "type": "integer",
+          "minimum": 500,
+          "maximum": 12000
+        },
+        "preview_only": {
+          "const": true
+        },
+        "non_actuating": {
+          "const": true
+        },
+        "claims_emotion_as_internal_state": {
+          "const": false
+        }
+      }
+    },
+    "catalogRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "robot_id",
+        "expression_id",
+        "revision",
+        "action",
+        "source_proposal_id",
+        "rollback_source_revision",
+        "previous_record_sha256",
+        "expression_sha256",
+        "expression",
+        "created_at_utc",
+        "actor_kind",
+        "preview_only",
+        "hardware_execution_authorized"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "openrgd.visual.catalog-revision.v0.1-candidate"
+        },
+        "robot_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]{0,79}$"
+        },
+        "expression_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{2,47}$"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 512
+        },
+        "action": {
+          "enum": [
+            "approve",
+            "rollback"
+          ]
+        },
+        "source_proposal_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rollback_source_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "previous_record_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expression_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "expression": {
+          "$ref": "#/$defs/eyeExpression"
+        },
+        "created_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actor_kind": {
+          "const": "explicit_local_cli_action"
+        },
+        "preview_only": {
+          "const": true
+        },
+        "hardware_execution_authorized": {
+          "const": false
+        }
+      }
+    },
+    "proposalPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposal_id",
+        "expression_id",
+        "source_kind",
+        "status",
+        "submitted_at_utc",
+        "approval_revision",
+        "expression"
+      ],
+      "properties": {
+        "proposal_id": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{32}$"
+        },
+        "expression_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{2,47}$"
+        },
+        "source_kind": {
+          "enum": [
+            "operator",
+            "cognitive_proposal"
+          ]
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "approved",
+            "rejected"
+          ]
+        },
+        "submitted_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "approval_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "expression": {
+          "$ref": "#/$defs/eyeExpression"
+        }
+      }
+    }
+  }
+}
