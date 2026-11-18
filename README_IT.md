@@ -22,7 +22,7 @@ cd ~/openrgd/repos/paky01-visual-feedback
 ./scripts/install-user.sh
 ```
 
-This installer creates a local Python venv, installs Bleak in the venv (no setuptools/editable install needed), writes a user-only config file and a `systemd --user` service. It **will not overwrite an existing config**. It requires working package access from the mini-PC for `pip install bleak`. It does **not** use sudo or change Bluetooth/robot configuration.
+On a fresh checkout, the installer first creates the private user configuration with a non-operational example BLE address and **exits without installing or starting a service**. Set the real address in `~/.config/paky-visual-feedback/config.json` (mode 0600), then rerun `./scripts/install-user.sh`. The installer creates a Python venv, installs Bleak (no setuptools/editable install needed), and writes a `systemd --user` service. It **will not overwrite an existing config**; existing Paky-01 installations keep their configured hardware address. It requires working package access for `pip install bleak`. It does **not** use sudo or change robot actuation.
 
 Test:
 
