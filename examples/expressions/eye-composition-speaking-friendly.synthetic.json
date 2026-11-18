@@ -1,0 +1,31 @@
+{
+  "schema_version": "openrgd.visual.eye-compose-input.v0.1-candidate",
+  "robot_id": "paky-01",
+  "now_monotonic_ms": 10000,
+  "source_kind": "operator_synthetic_preview",
+  "voice": {
+    "phase": "speaking",
+    "observed_monotonic_ms": 9950,
+    "capture_confirmed": false,
+    "playback_confirmed": true
+  },
+  "display": {
+    "link_state": "ready",
+    "eyes_enabled": true,
+    "reduced_motion": false
+  },
+  "microphone": {
+    "state": "disabled",
+    "observed_monotonic_ms": 9920
+  },
+  "gaze": {
+    "x": 0.22,
+    "y": -0.14,
+    "observed_monotonic_ms": 9940
+  },
+  "gesture": {
+    "scene": "friendly",
+    "gesture_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "started_monotonic_ms": 9850
+  }
+}

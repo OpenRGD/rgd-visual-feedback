@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openrgd.org/candidate/visual/eye-compose-input.v0.1",
+  "title": "Visual Feedback Eye Composition — synthetic operator preview input candidate v0.1",
+  "description": "Robot-agnostic, offline-only composition inputs. These timestamps and capture/playback flags are simulated, not authenticated operational evidence. No device execution or permission is requested.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "robot_id",
+    "now_monotonic_ms",
+    "source_kind",
+    "voice",
+    "display",
+    "microphone",
+    "gaze",
+    "gesture"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "openrgd.visual.eye-compose-input.v0.1-candidate"
+    },
+    "robot_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,79}$"
+    },
+    "now_monotonic_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854776000
+    },
+    "source_kind": {
+      "const": "operator_synthetic_preview"
+    },
+    "voice": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "phase",
+            "observed_monotonic_ms",
+            "capture_confirmed",
+            "playback_confirmed"
+          ],
+          "properties": {
+            "phase": {
+              "enum": [
+                "idle",
+                "listening",
+                "thinking",
+                "speaking",
+                "error",
+                "off",
+                "boot",
+                "connecting",
+                "transcribing",
+                "awaiting_user",
+                "no_input",
+                "link_lost",
+                "rest"
+              ]
+            },
+            "observed_monotonic_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854776000
+            },
+            "capture_confirmed": {
+              "type": "boolean"
+            },
+            "playback_confirmed": {
+              "type": "boolean"
+            }
+          }
+        }
+      ]
+    },
+    "display": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "link_state",
+        "eyes_enabled",
+        "reduced_motion"
+      ],
+      "properties": {
+        "link_state": {
+          "enum": [
+            "ready",
+            "connecting",
+            "lost"
+          ]
+        },
+        "eyes_enabled": {
+          "type": "boolean"
+        },
+        "reduced_motion": {
+          "type": "boolean"
+        }
+      }
+    },
+    "microphone": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "observed_monotonic_ms"
+          ],
+          "properties": {
+            "state": {
+              "enum": [
+                "disabled",
+                "monitoring",
+                "capturing",
+                "unknown"
+              ]
+            },
+            "observed_monotonic_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854776000
+            }
+          }
+        }
+      ]
+    },
+    "gaze": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "x",
+            "y",
+            "observed_monotonic_ms"
+          ],
+          "properties": {
+            "x": {
+              "type": "number",
+              "minimum": -0.6,
+              "maximum": 0.6
+            },
+            "y": {
+              "type": "number",
+              "minimum": -0.6,
+              "maximum": 0.6
+            },
+            "observed_monotonic_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854776000
+            }
+          }
+        }
+      ]
+    },
+    "gesture": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scene",
+            "gesture_id",
+            "started_monotonic_ms"
+          ],
+          "properties": {
+            "scene": {
+              "enum": [
+                "welcome",
+                "friendly",
+                "curious",
+                "surprised",
+                "uncertain",
+                "ack",
+                "concern"
+              ]
+            },
+            "gesture_id": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            },
+            "started_monotonic_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854776000
+            }
+          }
+        }
+      ]
+    }
+  }
+}
