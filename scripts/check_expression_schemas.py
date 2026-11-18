@@ -131,6 +131,40 @@ def check() -> None:
                 pass
             else:
                 raise AssertionError("Snapshot schema accepted untrusted field or false authority")
+    # Reusable robot-neutral expression pack (candidate, no hardware binding).
+    pack_schema = load(SCHEMAS / "eye-pack.v0.1-candidate.schema.json")
+    Draft202012Validator.check_schema(pack_schema)
+    pack_validator = Draft202012Validator(pack_schema, format_checker=FormatChecker())
+    pack = load(ROOT / "packs" / "eyes" / "core-v0.1.json")
+    pack_validator.validate(pack)
+    from rgd_visual.expression_packs import load_pack, preview_profile
+    checked_pack = load_pack(ROOT / "packs" / "eyes" / "core-v0.1.json")
+    preview_for_robot = preview_profile(checked_pack, "demo-robot")
+    v02_validator.validate(preview_for_robot)
+    from rgd_visual.studio import preview
+    assert preview(preview_for_robot, "voice", "listening.started")["scene"] == "listening"
+    for invalid in (
+        {**pack, "robot_id": "paky-01"},
+        {**pack, "expressions": {**pack["expressions"], "core_idle": {
+            **pack["expressions"]["core_idle"], "preview_only": False
+        }}},
+        {**pack, "scene_expressions": {**pack["scene_expressions"], "idle": "missing"}},
+    ):
+        try:
+            pack_validator.validate(invalid)
+        except ValidationError:
+            pass
+        else:
+            if invalid["scene_expressions"].get("idle") == "missing":
+                # JSON Schema cannot check dynamic object key references.
+                from rgd_visual.expression_packs import validate_pack
+                try:
+                    validate_pack(invalid)
+                except ValueError:
+                    continue
+            raise AssertionError("Eye pack contract accepted an invalid candidate")
+    print("SHARED EYE PACK: schema + generic robot preview + 3 invalid candidates OK")
+
     print("EXPRESSIVE CONTRACTS: 5 positive fixtures + 14 negative checks OK")
     print("CATALOG SNAPSHOT: pending/approved exports + 3 negative schemas OK")
 
