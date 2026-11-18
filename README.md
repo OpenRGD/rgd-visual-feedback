@@ -42,3 +42,7 @@ See README_IT.md and docs/VOICE_IO_HOOK.md.
 
 Visual feedback is independent from actuator control
 and the deterministic Somatic Runtime.
+
+## Reusable eye-expression pack (candidate)
+
+- [Core Eye Expressions v0.1](docs/SHARED_EYE_EXPRESSIONS.md): 21 robot-neutral eye recipes in Visual Feedback, plus an offline generator for any robot ID. All outputs are preview-only. Visual Effects Studio in `rgd-console` is a UI consumer, not a duplicate engine.
