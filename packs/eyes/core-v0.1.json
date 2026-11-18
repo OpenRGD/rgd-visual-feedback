@@ -1,0 +1,971 @@
+{
+  "schema_version": "openrgd.visual.eye-pack.v0.1-candidate",
+  "pack_id": "core_eyes_v01",
+  "revision": 1,
+  "description": "Robot-independent starter catalog of 21 expressive eye recipes. Preview only. No hardware or robot identity bindings.",
+  "expressions": {
+    "core_idle": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_idle",
+      "label": "Disponibile",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.2,
+        "intensity": 0.2
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.8,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1,
+          "brow_tilt_deg": 0
+        },
+        "right": {
+          "openness": 0.8,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1,
+          "brow_tilt_deg": 0
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 10
+      },
+      "animation": {
+        "mode": "breathe",
+        "blink_interval_ms": 5200,
+        "blink_duration_ms": 140
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_listening": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_listening",
+      "label": "Ascolto",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.45,
+        "intensity": 0.35
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.95,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.06,
+          "brow_tilt_deg": 0
+        },
+        "right": {
+          "openness": 0.95,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.06,
+          "brow_tilt_deg": 0
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#0050FF",
+        "accent": "#0050FF",
+        "ring_brightness_pct": 35
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 6500,
+        "blink_duration_ms": 130
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_thinking": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_thinking",
+      "label": "Elaborazione",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.3,
+        "intensity": 0.3
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.72,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.94,
+          "brow_tilt_deg": -4
+        },
+        "right": {
+          "openness": 0.72,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.94,
+          "brow_tilt_deg": 4
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#9600FF",
+        "accent": "#9600FF",
+        "ring_brightness_pct": 35
+      },
+      "animation": {
+        "mode": "scan",
+        "blink_interval_ms": 7000,
+        "blink_duration_ms": 150
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_speaking": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_speaking",
+      "label": "Risposta audio",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.45,
+        "intensity": 0.35
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.86,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.02,
+          "brow_tilt_deg": 0
+        },
+        "right": {
+          "openness": 0.86,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.02,
+          "brow_tilt_deg": 0
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#00FF46",
+        "accent": "#00FF46",
+        "ring_brightness_pct": 35
+      },
+      "animation": {
+        "mode": "breathe",
+        "blink_interval_ms": 4500,
+        "blink_duration_ms": 140
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_error": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_error",
+      "label": "Errore",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.25,
+        "intensity": 0.4
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.42,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.85,
+          "brow_tilt_deg": 8
+        },
+        "right": {
+          "openness": 0.42,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.85,
+          "brow_tilt_deg": -8
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FF0000",
+        "accent": "#FF0000",
+        "ring_brightness_pct": 30
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 12000,
+        "blink_duration_ms": 160
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_blank": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_blank",
+      "label": "Schermi neri (solo pixel)",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0,
+        "intensity": 0
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.12,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.6,
+          "brow_tilt_deg": 0
+        },
+        "right": {
+          "openness": 0.12,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.6,
+          "brow_tilt_deg": 0
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#000000",
+        "accent": "#000000",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 12000,
+        "blink_duration_ms": 140
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_boot": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_boot",
+      "label": "Avvio",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.1,
+        "intensity": 0.15
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.22,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.8,
+          "brow_tilt_deg": 0
+        },
+        "right": {
+          "openness": 0.22,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.8,
+          "brow_tilt_deg": 0
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#BFC7D5",
+        "accent": "#BFC7D5",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 12000,
+        "blink_duration_ms": 140
+      },
+      "duration_ms": 1600,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_connecting": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_connecting",
+      "label": "Attesa sincronizzazione",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.1,
+        "intensity": 0.15
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.4,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.85,
+          "brow_tilt_deg": 0
+        },
+        "right": {
+          "openness": 0.4,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.85,
+          "brow_tilt_deg": 0
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#BFC7D5",
+        "accent": "#BFC7D5",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 12000,
+        "blink_duration_ms": 140
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_input_accepted": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_input_accepted",
+      "label": "Attivazione confermata",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.45,
+        "intensity": 0.35
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.98,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.1,
+          "brow_tilt_deg": -3
+        },
+        "right": {
+          "openness": 0.98,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.1,
+          "brow_tilt_deg": 3
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#0050FF",
+        "accent": "#0050FF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 6000,
+        "blink_duration_ms": 130
+      },
+      "duration_ms": 700,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_transcribing": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_transcribing",
+      "label": "Trascrizione",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.25,
+        "intensity": 0.25
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.78,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.95,
+          "brow_tilt_deg": -2
+        },
+        "right": {
+          "openness": 0.78,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.95,
+          "brow_tilt_deg": 2
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#9600FF",
+        "accent": "#9600FF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "scan",
+        "blink_interval_ms": 7000,
+        "blink_duration_ms": 150
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_awaiting_user": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_awaiting_user",
+      "label": "Attesa risposta",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.2,
+        "intensity": 0.25
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.84,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.02,
+          "brow_tilt_deg": -3
+        },
+        "right": {
+          "openness": 0.84,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.02,
+          "brow_tilt_deg": 3
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 5500,
+        "blink_duration_ms": 150
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_no_input": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_no_input",
+      "label": "Richiesta da ripetere",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.2,
+        "intensity": 0.3
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.64,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1,
+          "brow_tilt_deg": -6
+        },
+        "right": {
+          "openness": 0.64,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1,
+          "brow_tilt_deg": 6
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 5000,
+        "blink_duration_ms": 180
+      },
+      "duration_ms": 1600,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_link_lost": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_link_lost",
+      "label": "Stato non aggiornato",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.1,
+        "intensity": 0.15
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.35,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.82,
+          "brow_tilt_deg": 0
+        },
+        "right": {
+          "openness": 0.35,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.82,
+          "brow_tilt_deg": 0
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#BFC7D5",
+        "accent": "#BFC7D5",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 12000,
+        "blink_duration_ms": 180
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_rest": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_rest",
+      "label": "Riposo grafico",
+      "origin": "operator",
+      "affect": {
+        "valence": 0,
+        "arousal": 0.05,
+        "intensity": 0.1
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.12,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.8,
+          "brow_tilt_deg": 0
+        },
+        "right": {
+          "openness": 0.12,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.8,
+          "brow_tilt_deg": 0
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#BFC7D5",
+        "accent": "#BFC7D5",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 12000,
+        "blink_duration_ms": 220
+      },
+      "duration_ms": 12000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_welcome": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_welcome",
+      "label": "Saluto",
+      "origin": "operator",
+      "affect": {
+        "valence": 0.35,
+        "arousal": 0.4,
+        "intensity": 0.35
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.88,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.1,
+          "brow_tilt_deg": -4
+        },
+        "right": {
+          "openness": 0.88,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.1,
+          "brow_tilt_deg": 4
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "breathe",
+        "blink_interval_ms": 5000,
+        "blink_duration_ms": 140
+      },
+      "duration_ms": 1800,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_friendly": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_friendly",
+      "label": "Espressione amichevole",
+      "origin": "operator",
+      "affect": {
+        "valence": 0.45,
+        "arousal": 0.35,
+        "intensity": 0.4
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.68,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.05,
+          "brow_tilt_deg": -8
+        },
+        "right": {
+          "openness": 0.68,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.05,
+          "brow_tilt_deg": 8
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "breathe",
+        "blink_interval_ms": 5000,
+        "blink_duration_ms": 140
+      },
+      "duration_ms": 1500,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_curious": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_curious",
+      "label": "Curiosità grafica",
+      "origin": "operator",
+      "affect": {
+        "valence": 0.15,
+        "arousal": 0.45,
+        "intensity": 0.4
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.92,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.08,
+          "brow_tilt_deg": -10
+        },
+        "right": {
+          "openness": 0.8,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.08,
+          "brow_tilt_deg": 5
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 6500,
+        "blink_duration_ms": 140
+      },
+      "duration_ms": 2000,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_surprised": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_surprised",
+      "label": "Sorpresa grafica",
+      "origin": "operator",
+      "affect": {
+        "valence": 0.1,
+        "arousal": 0.7,
+        "intensity": 0.5
+      },
+      "eyes": {
+        "left": {
+          "openness": 1,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.18,
+          "brow_tilt_deg": -12
+        },
+        "right": {
+          "openness": 1,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.18,
+          "brow_tilt_deg": 12
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 6500,
+        "blink_duration_ms": 110
+      },
+      "duration_ms": 800,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_uncertain": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_uncertain",
+      "label": "Richiesta di chiarimento",
+      "origin": "operator",
+      "affect": {
+        "valence": -0.1,
+        "arousal": 0.3,
+        "intensity": 0.35
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.66,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.95,
+          "brow_tilt_deg": 8
+        },
+        "right": {
+          "openness": 0.82,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.95,
+          "brow_tilt_deg": 10
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 6000,
+        "blink_duration_ms": 170
+      },
+      "duration_ms": 1800,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_ack": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_ack",
+      "label": "Conferma",
+      "origin": "operator",
+      "affect": {
+        "valence": 0.25,
+        "arousal": 0.25,
+        "intensity": 0.3
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.74,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.02,
+          "brow_tilt_deg": -4
+        },
+        "right": {
+          "openness": 0.74,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 1.02,
+          "brow_tilt_deg": 4
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 5000,
+        "blink_duration_ms": 140
+      },
+      "duration_ms": 700,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    },
+    "core_concern": {
+      "schema_version": "openrgd.visual.eye-expression.v0.1-candidate",
+      "expression_id": "core_concern",
+      "label": "Premura grafica",
+      "origin": "operator",
+      "affect": {
+        "valence": -0.2,
+        "arousal": 0.3,
+        "intensity": 0.35
+      },
+      "eyes": {
+        "left": {
+          "openness": 0.6,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.94,
+          "brow_tilt_deg": 10
+        },
+        "right": {
+          "openness": 0.6,
+          "gaze_x": 0,
+          "gaze_y": 0,
+          "pupil_scale": 0.94,
+          "brow_tilt_deg": -10
+        }
+      },
+      "palette": {
+        "background": "#000000",
+        "iris": "#FFFFFF",
+        "accent": "#FFFFFF",
+        "ring_brightness_pct": 0
+      },
+      "animation": {
+        "mode": "still",
+        "blink_interval_ms": 6500,
+        "blink_duration_ms": 170
+      },
+      "duration_ms": 1800,
+      "preview_only": true,
+      "non_actuating": true,
+      "claims_emotion_as_internal_state": false
+    }
+  },
+  "scene_expressions": {
+    "idle": "core_idle",
+    "listening": "core_listening",
+    "thinking": "core_thinking",
+    "speaking": "core_speaking",
+    "error": "core_error",
+    "off": "core_blank",
+    "boot": "core_boot",
+    "connecting": "core_connecting",
+    "input_accepted": "core_input_accepted",
+    "transcribing": "core_transcribing",
+    "awaiting_user": "core_awaiting_user",
+    "no_input": "core_no_input",
+    "link_lost": "core_link_lost",
+    "rest": "core_rest",
+    "welcome": "core_welcome",
+    "friendly": "core_friendly",
+    "curious": "core_curious",
+    "surprised": "core_surprised",
+    "uncertain": "core_uncertain",
+    "ack": "core_ack",
+    "concern": "core_concern"
+  },
+  "ring_styles": {
+    "idle": {
+      "color": "#FFFFFF",
+      "brightness": 10
+    },
+    "listening": {
+      "color": "#0050FF",
+      "brightness": 35
+    },
+    "thinking": {
+      "color": "#9600FF",
+      "brightness": 35
+    },
+    "speaking": {
+      "color": "#00FF46",
+      "brightness": 35
+    },
+    "error": {
+      "color": "#FF0000",
+      "brightness": 30
+    },
+    "off": {
+      "color": "#000000",
+      "brightness": 0
+    }
+  },
+  "voice_events": [
+    {
+      "event": "listening.started",
+      "scene": "listening",
+      "priority": 50
+    },
+    {
+      "event": "inference.started",
+      "scene": "thinking",
+      "priority": 50
+    },
+    {
+      "event": "playback.started",
+      "scene": "speaking",
+      "priority": 50
+    },
+    {
+      "event": "playback.ended",
+      "scene": "idle",
+      "priority": 50
+    },
+    {
+      "event": "voice.error",
+      "scene": "error",
+      "priority": 90
+    },
+    {
+      "event": "voice.ready",
+      "scene": "idle",
+      "priority": 50
+    }
+  ]
+}
