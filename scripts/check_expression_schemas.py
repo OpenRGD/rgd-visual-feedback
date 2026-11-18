@@ -163,6 +163,32 @@ def check() -> None:
                 except ValueError:
                     continue
             raise AssertionError("Eye pack contract accepted an invalid candidate")
+    # Synthetic composition is explicitly NOT a real producer ingress.
+    compose_schema = load(SCHEMAS / "eye-compose-input.v0.1-candidate.schema.json")
+    Draft202012Validator.check_schema(compose_schema)
+    compose_validator = Draft202012Validator(compose_schema, format_checker=FormatChecker())
+    case = load(FIXTURES / "eye-composition-speaking-friendly.synthetic.json")
+    compose_validator.validate(case)
+    from rgd_visual.eye_composition import compose_preview
+    result = compose_preview(checked_pack, case)
+    assert result["functional_scene"] == "speaking"
+    assert result["gesture_status"] == "visible"
+    assert result["ring_intent"]["color"] == "#00FF46"
+    assert not result["hardware_commands_sent"]
+    for invalid in (
+        {**case, "source_kind": "trusted_producer"},
+        {**case, "hardware_execution_authorized": True},
+        {**case, "display": {**case["display"], "eyes_enabled": "yes"}},
+        {**case, "gesture": {**case["gesture"], "scene": "system.exec"}},
+    ):
+        try:
+            compose_validator.validate(invalid)
+        except ValidationError:
+            pass
+        else:
+            raise AssertionError("Composition schema accepted invalid or authority-bearing input")
+    print("EYE COMPOSITION: synthetic fixture + 4 negative schema cases OK")
+
     print("SHARED EYE PACK: schema + generic robot preview + 3 invalid candidates OK")
 
     print("EXPRESSIVE CONTRACTS: 5 positive fixtures + 14 negative checks OK")
