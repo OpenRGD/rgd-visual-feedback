@@ -37,7 +37,7 @@ sleep 2
 ~/.local/bin/paky-led idle
 ```
 
-The adapter's expected BLE address is `FF:24:11:29:26:62`, based on a **physical power-cycle BLE identification** (device GATT--DEMO, FFF0/FFF3).
+The public example uses the non-operational BLE address `00:00:00:00:00:00`. Before a first installation, set the **real device address only in** `~/.config/paky-visual-feedback/config.json` (private per-host configuration, mode 0600). Existing installed configurations are preserved by the installer. The physical Paky-01 BLE identifier belongs to the private instance inventory, not the generic OpenRGD adapter documentation.
 
 Check service:
 
