@@ -27,7 +27,7 @@ class ProtocolTests(unittest.TestCase):
 
     def test_user_config(self):
         settings = load(ROOT / "config.example.json")
-        self.assertEqual(settings.device_address, "FF:24:11:29:26:62")
+        self.assertEqual(settings.device_address, "00:00:00:00:00:00")
         self.assertEqual(settings.states["listening"].color, "#0050FF")
 
 if __name__ == "__main__":

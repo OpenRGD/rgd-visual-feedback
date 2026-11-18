@@ -16,6 +16,16 @@ if [[ ! -f "$CONFIG" ]]; then
 else
   echo "Configuration preserved: $CONFIG"
 fi
+
+# Never start a BLE service with the public example's deliberately
+# non-operational address. This check does not read or modify any other data.
+if grep -Eq '"device_address"[[:space:]]*:[[:space:]]*"00:00:00:00:00:00"' "$CONFIG"; then
+  echo "BLE device address is a public placeholder."
+  echo "Set the actual address in private local config: $CONFIG"
+  echo "Then rerun this installer. No service was installed or started."
+  exit 2
+fi
+
 python3 -m venv "$SRC/.venv"
 "$SRC/.venv/bin/python" -m pip install "bleak>=0.20,<3"
 PYTHONPATH="$SRC/src" "$SRC/.venv/bin/python" -m unittest discover -s "$SRC/tests" -v
