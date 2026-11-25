@@ -1,0 +1,282 @@
+[
+  {
+    "schema_version": "openrgd.visual.expression-director-step.v0.1-candidate",
+    "session_id": "0123456789abcdef0123456789abcdef",
+    "sequence": 0,
+    "composition": {
+      "schema_version": "openrgd.visual.eye-compose-input.v0.1-candidate",
+      "robot_id": "paky-01",
+      "now_monotonic_ms": 10000,
+      "source_kind": "operator_synthetic_preview",
+      "voice": {
+        "phase": "speaking",
+        "observed_monotonic_ms": 10000,
+        "capture_confirmed": false,
+        "playback_confirmed": true
+      },
+      "display": {
+        "link_state": "ready",
+        "eyes_enabled": true,
+        "reduced_motion": false
+      },
+      "microphone": {
+        "state": "disabled",
+        "observed_monotonic_ms": 10000
+      },
+      "gaze": {
+        "x": 0.22,
+        "y": -0.14,
+        "observed_monotonic_ms": 10000
+      },
+      "gesture": null
+    },
+    "gesture_request": {
+      "gesture_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "scene": "friendly",
+      "requested_monotonic_ms": 10000
+    }
+  },
+  {
+    "schema_version": "openrgd.visual.expression-director-step.v0.1-candidate",
+    "session_id": "0123456789abcdef0123456789abcdef",
+    "sequence": 1,
+    "composition": {
+      "schema_version": "openrgd.visual.eye-compose-input.v0.1-candidate",
+      "robot_id": "paky-01",
+      "now_monotonic_ms": 10500,
+      "source_kind": "operator_synthetic_preview",
+      "voice": {
+        "phase": "speaking",
+        "observed_monotonic_ms": 10500,
+        "capture_confirmed": false,
+        "playback_confirmed": true
+      },
+      "display": {
+        "link_state": "ready",
+        "eyes_enabled": true,
+        "reduced_motion": false
+      },
+      "microphone": {
+        "state": "disabled",
+        "observed_monotonic_ms": 10500
+      },
+      "gaze": {
+        "x": 0.22,
+        "y": -0.14,
+        "observed_monotonic_ms": 10000
+      },
+      "gesture": null
+    },
+    "gesture_request": {
+      "gesture_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "scene": "friendly",
+      "requested_monotonic_ms": 10000
+    }
+  },
+  {
+    "schema_version": "openrgd.visual.expression-director-step.v0.1-candidate",
+    "session_id": "0123456789abcdef0123456789abcdef",
+    "sequence": 2,
+    "composition": {
+      "schema_version": "openrgd.visual.eye-compose-input.v0.1-candidate",
+      "robot_id": "paky-01",
+      "now_monotonic_ms": 10900,
+      "source_kind": "operator_synthetic_preview",
+      "voice": {
+        "phase": "idle",
+        "observed_monotonic_ms": 10900,
+        "capture_confirmed": false,
+        "playback_confirmed": false
+      },
+      "display": {
+        "link_state": "ready",
+        "eyes_enabled": true,
+        "reduced_motion": false
+      },
+      "microphone": {
+        "state": "disabled",
+        "observed_monotonic_ms": 10900
+      },
+      "gaze": {
+        "x": 0.22,
+        "y": -0.14,
+        "observed_monotonic_ms": 10000
+      },
+      "gesture": null
+    },
+    "gesture_request": null
+  },
+  {
+    "schema_version": "openrgd.visual.expression-director-step.v0.1-candidate",
+    "session_id": "0123456789abcdef0123456789abcdef",
+    "sequence": 3,
+    "composition": {
+      "schema_version": "openrgd.visual.eye-compose-input.v0.1-candidate",
+      "robot_id": "paky-01",
+      "now_monotonic_ms": 11500,
+      "source_kind": "operator_synthetic_preview",
+      "voice": {
+        "phase": "idle",
+        "observed_monotonic_ms": 11500,
+        "capture_confirmed": false,
+        "playback_confirmed": false
+      },
+      "display": {
+        "link_state": "ready",
+        "eyes_enabled": true,
+        "reduced_motion": false
+      },
+      "microphone": {
+        "state": "disabled",
+        "observed_monotonic_ms": 11500
+      },
+      "gaze": {
+        "x": 0.22,
+        "y": -0.14,
+        "observed_monotonic_ms": 10000
+      },
+      "gesture": null
+    },
+    "gesture_request": null
+  },
+  {
+    "schema_version": "openrgd.visual.expression-director-step.v0.1-candidate",
+    "session_id": "0123456789abcdef0123456789abcdef",
+    "sequence": 4,
+    "composition": {
+      "schema_version": "openrgd.visual.eye-compose-input.v0.1-candidate",
+      "robot_id": "paky-01",
+      "now_monotonic_ms": 11600,
+      "source_kind": "operator_synthetic_preview",
+      "voice": {
+        "phase": "idle",
+        "observed_monotonic_ms": 11600,
+        "capture_confirmed": false,
+        "playback_confirmed": false
+      },
+      "display": {
+        "link_state": "ready",
+        "eyes_enabled": true,
+        "reduced_motion": false
+      },
+      "microphone": {
+        "state": "disabled",
+        "observed_monotonic_ms": 11600
+      },
+      "gaze": {
+        "x": 0.22,
+        "y": -0.14,
+        "observed_monotonic_ms": 10000
+      },
+      "gesture": null
+    },
+    "gesture_request": {
+      "gesture_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "scene": "curious",
+      "requested_monotonic_ms": 11600
+    }
+  },
+  {
+    "schema_version": "openrgd.visual.expression-director-step.v0.1-candidate",
+    "session_id": "0123456789abcdef0123456789abcdef",
+    "sequence": 5,
+    "composition": {
+      "schema_version": "openrgd.visual.eye-compose-input.v0.1-candidate",
+      "robot_id": "paky-01",
+      "now_monotonic_ms": 11800,
+      "source_kind": "operator_synthetic_preview",
+      "voice": {
+        "phase": "error",
+        "observed_monotonic_ms": 11800,
+        "capture_confirmed": false,
+        "playback_confirmed": false
+      },
+      "display": {
+        "link_state": "ready",
+        "eyes_enabled": true,
+        "reduced_motion": false
+      },
+      "microphone": {
+        "state": "disabled",
+        "observed_monotonic_ms": 11800
+      },
+      "gaze": {
+        "x": 0.22,
+        "y": -0.14,
+        "observed_monotonic_ms": 10000
+      },
+      "gesture": null
+    },
+    "gesture_request": null
+  },
+  {
+    "schema_version": "openrgd.visual.expression-director-step.v0.1-candidate",
+    "session_id": "0123456789abcdef0123456789abcdef",
+    "sequence": 6,
+    "composition": {
+      "schema_version": "openrgd.visual.eye-compose-input.v0.1-candidate",
+      "robot_id": "paky-01",
+      "now_monotonic_ms": 12000,
+      "source_kind": "operator_synthetic_preview",
+      "voice": {
+        "phase": "idle",
+        "observed_monotonic_ms": 12000,
+        "capture_confirmed": false,
+        "playback_confirmed": false
+      },
+      "display": {
+        "link_state": "ready",
+        "eyes_enabled": true,
+        "reduced_motion": false
+      },
+      "microphone": {
+        "state": "disabled",
+        "observed_monotonic_ms": 12000
+      },
+      "gaze": {
+        "x": 0.22,
+        "y": -0.14,
+        "observed_monotonic_ms": 10000
+      },
+      "gesture": null
+    },
+    "gesture_request": {
+      "gesture_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "scene": "curious",
+      "requested_monotonic_ms": 11600
+    }
+  },
+  {
+    "schema_version": "openrgd.visual.expression-director-step.v0.1-candidate",
+    "session_id": "0123456789abcdef0123456789abcdef",
+    "sequence": 7,
+    "composition": {
+      "schema_version": "openrgd.visual.eye-compose-input.v0.1-candidate",
+      "robot_id": "paky-01",
+      "now_monotonic_ms": 14101,
+      "source_kind": "operator_synthetic_preview",
+      "voice": {
+        "phase": "idle",
+        "observed_monotonic_ms": 12000,
+        "capture_confirmed": false,
+        "playback_confirmed": false
+      },
+      "display": {
+        "link_state": "ready",
+        "eyes_enabled": true,
+        "reduced_motion": false
+      },
+      "microphone": {
+        "state": "disabled",
+        "observed_monotonic_ms": 14101
+      },
+      "gaze": {
+        "x": 0.22,
+        "y": -0.14,
+        "observed_monotonic_ms": 10000
+      },
+      "gesture": null
+    },
+    "gesture_request": null
+  }
+]

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openrgd.org/candidate/visual/expression-director-step.v0.1",
+  "title": "Expression Director synthetic session step (candidate)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "session_id",
+    "sequence",
+    "composition",
+    "gesture_request"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "openrgd.visual.expression-director-step.v0.1-candidate"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{32}$"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9223372036854775807
+    },
+    "composition": {
+      "allOf": [
+        {
+          "$ref": "https://openrgd.org/candidate/visual/eye-compose-input.v0.1"
+        },
+        {
+          "properties": {
+            "gesture": {
+              "type": "null"
+            }
+          }
+        }
+      ]
+    },
+    "gesture_request": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "gesture_id",
+            "scene",
+            "requested_monotonic_ms"
+          ],
+          "properties": {
+            "gesture_id": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{32}$"
+            },
+            "scene": {
+              "enum": [
+                "welcome",
+                "friendly",
+                "curious",
+                "surprised",
+                "uncertain",
+                "ack",
+                "concern"
+              ]
+            },
+            "requested_monotonic_ms": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9223372036854775807
+            }
+          }
+        }
+      ]
+    }
+  }
+}

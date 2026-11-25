@@ -189,6 +189,34 @@ def check() -> None:
             raise AssertionError("Composition schema accepted invalid or authority-bearing input")
     print("EYE COMPOSITION: synthetic fixture + 4 negative schema cases OK")
 
+    # Local-only reference registry; never resolve schema IDs over the network.
+    from referencing import Registry, Resource
+    from rgd_visual.expression_director import ExpressionDirector
+    director_schema = load(SCHEMAS / "expression-director-step.v0.1-candidate.schema.json")
+    Draft202012Validator.check_schema(director_schema)
+    registry = Registry().with_resource(compose_schema["$id"], Resource.from_contents(compose_schema))
+    director_validator = Draft202012Validator(director_schema, registry=registry)
+    frames = load(FIXTURES / "expression-director.synthetic.json")
+    director = ExpressionDirector(checked_pack, robot_id=frames[0]["composition"]["robot_id"],
+                                  session_id=frames[0]["session_id"])
+    for frame in frames:
+        director_validator.validate(frame)
+        assert not director.step(frame)["hardware_commands_sent"]
+    for invalid in (
+        {**frames[0], "source_authenticated": True},
+        {**frames[0], "composition": {**frames[0]["composition"], "source_kind": "live"}},
+        {**frames[0], "composition": {**frames[0]["composition"], "gesture": case["gesture"]}},
+        {**frames[0], "gesture_request": {**frames[0]["gesture_request"], "priority": 100}},
+    ):
+        try:
+            director_validator.validate(invalid)
+        except ValidationError:
+            pass
+        else:
+            raise AssertionError("Director schema accepted invalid or authority-bearing step")
+    print("EXPRESSION DIRECTOR: 8 synthetic steps + 4 negative schema cases OK")
+
+
     print("SHARED EYE PACK: schema + generic robot preview + 3 invalid candidates OK")
 
     print("EXPRESSIVE CONTRACTS: 5 positive fixtures + 14 negative checks OK")
