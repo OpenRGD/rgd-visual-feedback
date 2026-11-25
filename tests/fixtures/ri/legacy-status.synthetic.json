@@ -1,0 +1,17 @@
+{
+  "ok": true,
+  "adapter": "miracles-star-ble",
+  "address": "00:00:00:00:00:00",
+  "connected": true,
+  "desired": "speaking",
+  "applied": "idle",
+  "last_error": null,
+  "voice_event": {
+    "schema_version": "openrgd.visual.voice-event.v0.1-candidate",
+    "source": "rgd-voice",
+    "session_id": "0123456789abcdef0123456789abcdef",
+    "last_sequence": 7,
+    "last_event": "playback.started",
+    "physical_event_verified": false
+  }
+}

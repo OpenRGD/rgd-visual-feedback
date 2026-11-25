@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:openrgd:reality-ingress:consumer-observation-ref:v0.1-candidate",
+  "title": "OpenRGD Reality Ingress read-only observation reference (candidate)",
+  "description": "A small read-only projection of an already-recorded v0.4 ObservationEnvelope. It is not a Core schema, a verified physical source, a Chronograf anchor, a Chronon, or an effect authorization. Historical IDs and data remain unchanged.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "observation_id",
+    "source_id",
+    "modality",
+    "reference_frame_id",
+    "sample_sequence",
+    "payload_sha256_hex",
+    "payload_media_type",
+    "payload_size_bytes",
+    "origin_status",
+    "integrity_status",
+    "source_verified",
+    "robot_binding_verified",
+    "history_committed",
+    "actuation_enabled",
+    "time"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "ri.consumer-observation-ref.v0.1-candidate"
+    },
+    "observation_id": {
+      "type": "string",
+      "pattern": "^obs_[0-9a-f]{32}$"
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "modality": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "reference_frame_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "sample_sequence": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "payload_sha256_hex": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "payload_media_type": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "payload_size_bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "origin_status": {
+      "enum": [
+        "unknown",
+        "source_claimed_physical",
+        "source_declared_simulated"
+      ]
+    },
+    "integrity_status": {
+      "enum": [
+        "not_verified",
+        "verified_local_hash"
+      ]
+    },
+    "source_verified": {
+      "const": false
+    },
+    "robot_binding_verified": {
+      "const": false
+    },
+    "history_committed": {
+      "const": false
+    },
+    "actuation_enabled": {
+      "const": false
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "clock_domain_id",
+        "boot_id",
+        "received_monotonic_ns",
+        "source_time_status",
+        "source_measurement_time",
+        "chronograf_anchor_ref"
+      ],
+      "properties": {
+        "clock_domain_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "boot_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "received_monotonic_ns": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source_time_status": {
+          "const": "unknown"
+        },
+        "source_measurement_time": {
+          "type": "null"
+        },
+        "chronograf_anchor_ref": {
+          "type": "null"
+        }
+      }
+    }
+  }
+}

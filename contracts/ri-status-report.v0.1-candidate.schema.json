@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:openrgd:visual:ri-status-report:v0.1-candidate",
+  "title": "Local Visual status report (candidate, no authority)",
+  "description": "Inert snapshot projection; NOT a RI observation, Core delivery report, physical observation or live input.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "input_kind",
+    "freshness",
+    "source_authenticated",
+    "robot_binding_verified",
+    "physical_output_observed",
+    "physical_observation_ref",
+    "history_committed",
+    "actuation_enabled",
+    "may_drive_visual",
+    "non_actuating",
+    "reports"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "openrgd.visual.ri-status-report.v0.1-candidate"
+    },
+    "input_kind": {
+      "enum": [
+        "unverified_snapshot",
+        "synthetic",
+        "replay"
+      ]
+    },
+    "freshness": {
+      "const": "unknown"
+    },
+    "source_authenticated": {
+      "const": false
+    },
+    "robot_binding_verified": {
+      "const": false
+    },
+    "physical_output_observed": {
+      "const": false
+    },
+    "physical_observation_ref": {
+      "type": "null"
+    },
+    "history_committed": {
+      "const": false
+    },
+    "actuation_enabled": {
+      "const": false
+    },
+    "may_drive_visual": {
+      "const": false
+    },
+    "non_actuating": {
+      "const": true
+    },
+    "reports": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_kind",
+            "source_owner",
+            "reported_by",
+            "occurred_at",
+            "clock_domain_id",
+            "proof",
+            "data"
+          ],
+          "properties": {
+            "event_kind": {
+              "const": "visual.delivery.status_snapshot"
+            },
+            "source_owner": {
+              "const": "rgd-visual-feedback"
+            },
+            "reported_by": {
+              "const": "rgd-visual-feedback"
+            },
+            "occurred_at": {
+              "type": "null"
+            },
+            "clock_domain_id": {
+              "type": "null"
+            },
+            "proof": {
+              "const": "driver_status_only"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "adapter",
+                "connected",
+                "desired",
+                "rendered_scene",
+                "applied",
+                "driver_ack_reported",
+                "error_reported"
+              ],
+              "properties": {
+                "adapter": {
+                  "const": "miracles-star-ble"
+                },
+                "connected": {
+                  "type": "boolean"
+                },
+                "desired": {
+                  "enum": [
+                    "idle",
+                    "listening",
+                    "thinking",
+                    "speaking",
+                    "error",
+                    "off"
+                  ]
+                },
+                "rendered_scene": {
+                  "type": "null"
+                },
+                "applied": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "idle",
+                        "listening",
+                        "thinking",
+                        "speaking",
+                        "error",
+                        "off"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "driver_ack_reported": {
+                  "type": "boolean"
+                },
+                "error_reported": {
+                  "type": "boolean"
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "applied": {
+                        "type": "null"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "driver_ack_reported": {
+                        "const": false
+                      }
+                    }
+                  },
+                  "else": {
+                    "properties": {
+                      "driver_ack_reported": {
+                        "const": true
+                      },
+                      "connected": {
+                        "const": true
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_kind",
+            "source_owner",
+            "reported_by",
+            "occurred_at",
+            "clock_domain_id",
+            "proof",
+            "data"
+          ],
+          "properties": {
+            "event_kind": {
+              "const": "voice.lifecycle.last_accepted_report"
+            },
+            "source_owner": {
+              "const": "rgd-voice"
+            },
+            "reported_by": {
+              "const": "rgd-visual-feedback"
+            },
+            "occurred_at": {
+              "type": "null"
+            },
+            "clock_domain_id": {
+              "type": "null"
+            },
+            "proof": {
+              "const": "visual_gate_status_only"
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "source_schema",
+                "session_id",
+                "sequence",
+                "event"
+              ],
+              "properties": {
+                "source_schema": {
+                  "const": "openrgd.visual.voice-event.v0.1-candidate"
+                },
+                "session_id": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{32}$"
+                },
+                "sequence": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9223372036854776000
+                },
+                "event": {
+                  "enum": [
+                    "listening.started",
+                    "inference.started",
+                    "playback.started",
+                    "playback.ended",
+                    "voice.error",
+                    "voice.ready"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ],
+      "items": false
+    }
+  }
+}
